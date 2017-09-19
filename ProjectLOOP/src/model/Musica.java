@@ -16,5 +16,47 @@ class Musica {
     private String nomeCantor;
     private String banda;
     private String album;
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getEstiloMusical() {
+        return estiloMusical;
+    }
+
+    public void setEstiloMusical(String estiloMusical) {
+        this.estiloMusical = estiloMusical;
+    }
+
+    public String getNomeCantor() {
+        return nomeCantor;
+    }
+
+    public void setNomeCantor(String nomeCantor) {
+        this.nomeCantor = nomeCantor;
+    }
+
+    public String getBanda() {
+        return banda;
+    }
+
+    public void setBanda(String banda) {
+        this.banda = banda;
+    }
+
+    public String getAlbum() {
+        return album;
+    }
+
+    public void setAlbum(String album) {
+        this.album = album;
+    }
     
+    
+        
 }

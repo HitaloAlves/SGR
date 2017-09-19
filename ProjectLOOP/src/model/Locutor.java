@@ -14,7 +14,16 @@ import javafx.scene.chart.PieChart.Data;
 public class Locutor extends Pessoa{
     
     private Data dataNascimento;
+
+    public Data getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(Data dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
     
+       
     
     
             

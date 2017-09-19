@@ -15,10 +15,26 @@ import javafx.scene.chart.PieChart.Data;
 public class Responsavel extends Pessoa{
     
     private String cargo;
-    private Data data;     
+    private Data dataNascimento;     
     private Radio radio;
-    
-    
+
+    public String getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(String cargo) {
+        this.cargo = cargo;
+    }
+
+    public Data getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(Data dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+ 
+      
     
     
             

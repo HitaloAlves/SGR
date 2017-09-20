@@ -17,6 +17,22 @@ public class Responsavel extends Pessoa{
     private String cargo;
     private Data dataNascimento;     
     private Radio radio;
+    
+    public void criarProgramaRadio(){
+        
+    }
+    
+    public void listarProgramasRadio(){
+        
+    }
+    
+    public void excluirProgramaRadio(){
+        
+    }
+    
+    public void alterarProgramaRadio(){
+        
+    }
 
     public String getCargo() {
         return cargo;

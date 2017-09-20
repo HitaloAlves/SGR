@@ -17,6 +17,18 @@ class ProgramaRadio {
     private int tipo;
     private String locutor;
     private Radio radio;
+    
+    public void listarProgramasRadio(){
+        
+    }
+    
+    public void alterarProgramasRadio(){
+        
+    }
+    
+    public void excluirProgramaRadio(){
+        
+    }
 
     public String getNome() {
         return nome;

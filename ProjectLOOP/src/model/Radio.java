@@ -20,6 +20,22 @@ class Radio {
     private int cep;
     private int complemento;
     private int cnpj;
+    
+    public void adicionarLocutor(){
+        
+    }
+    
+    public void adicionarResponsavel(){
+        
+    }
+    
+    public void criarListaMusica(){
+        
+    }
+    
+    public void criarProgramaRadio(){
+        
+    }
 
     public String getNome() {
         return nome;

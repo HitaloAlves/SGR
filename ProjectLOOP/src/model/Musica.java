@@ -16,6 +16,30 @@ class Musica {
     private String nomeCantor;
     private String banda;
     private String album;
+    
+    public void playMusica(){
+        
+    }
+    
+    public void pauseMusica(){
+        
+    }
+    
+    public void nextMusica(){
+        
+    }
+    
+    public void backMusica(){
+        
+    }
+    
+    public void autMusica(){
+        
+    }
+    
+    public void repetirMusica(){
+        
+    }
 
     public String getNome() {
         return nome;

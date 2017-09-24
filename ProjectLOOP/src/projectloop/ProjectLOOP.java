@@ -1,7 +1,11 @@
 
 package projectloop;
 
-import model.Acesso;
+//import model.Acesso;
+
+import model.Musica;
+
+
 
 /**
  *
@@ -15,9 +19,14 @@ public class ProjectLOOP {
     public static void main(String[] args) {
         // TODO code application logic here
         
-        Acesso login = new Acesso("leo", "1223", 1);
+        //Acesso login = new Acesso("leonardobezerra39@gmail.com", "a1l-swko", 0);
         
-        System.out.println(login.getMessage());
+        //System.out.println(login.getMessage());
+        
+        Musica music = new Musica();
+        
+        music.playMusica("01");
+        
     }
     
 }

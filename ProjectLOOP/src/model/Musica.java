@@ -5,11 +5,15 @@
  */
 package model;
 
+import java.applet.Applet;
+import java.applet.AudioClip;
+import java.net.URL;
+
 /**
  *
  * @author leonardo
  */
-class Musica {
+public class Musica {
     
     private String nome;
     private String estiloMusical;
@@ -17,9 +21,12 @@ class Musica {
     private String banda;
     private String album;
     
-    public void playMusica(){
-        
+    public void playMusica(String nome){
+        URL url = getClass().getResource("../musicas/"+nome+".mp3");
+        AudioClip audio =  Applet.newAudioClip(url);
+        audio.play();
     }
+    
     
     public void pauseMusica(){
         

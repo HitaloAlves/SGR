@@ -24,7 +24,7 @@ public class Acesso {
         this.typeUser = typeUser;
         
         this.tableAcessoUser(this.typeUser);
-        
+                
         this.verificarEmail();
         
     }
@@ -47,36 +47,33 @@ public class Acesso {
         
     }
     
-    private void verificarTypeUser(){
-        
-    }
-    
     private void verificarEmail(){        
         
         if("leo".equals(this.email)){
-            this.verificarSenha();
+            this.fazerLogin();
         } else {
             this.message = "Email não está cadastrado";
         }
         
     }
     
-    private void verificarSenha(){
+    private void fazerLogin(){
         if("123".equals(this.senha)){
-            this.fazerLogin();
+            this.createSession(12);
         } else {
             this.message = "Senha incorreta";
         }
-    }
+    } 
     
-    private void fazerLogin(){
+    private boolean createSession(int id){
         
-        this.message = "Tipo: " + this.tableAcesso;
-        
-    }  
+        return false;
+    }
     
     public String getMessage(){
         return this.message;
     }
+    
+    
     
 }

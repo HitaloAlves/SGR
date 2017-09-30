@@ -1,0 +1,9 @@
+
+Estilos Musicais -
+
+INSERT INTO EstiloMusicais (nome) values ('Axé'), ('Black Music'), ('Clássico'), ('Country'), ('Dance'), ('Evangélica'), ('Forró'), ('Gospel'), ('Instrumental'), ('Latino'), ('MPB'), ('New Age'), ('Notícias'), ('Oldies'), ('Pagode'), ('Pop'), ('Pop-Rock'), ('Popular'), ('Rap'), ('Reggae'), ('Regional'), ('Religioso'), ('Rock'), ('Samba'), ('Sertanejo'), ('Funk');
+
+
+Tipos Programas Radio - 
+
+INSERT INTO TiposProgramasRadio (nome) values ('Informativo'), ('Musical'), ('Munitário'), ('Educativo-cultural'), ('Místico-religioso'), ('Entrevista'), ('Manchetes'), ('Música - Esporte - Notícia'), ('Radiojornal'), ('Humorísticos'), ('Reportagem'), ('Mesa-redonda '), ('Radiorevista');

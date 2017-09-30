@@ -9,19 +9,16 @@ package model;
  *
  * @author leonardo
  */
-public class Admin extends Pessoa {    
+public final class Sessao {
     
-       
-    public void criarAdmin(){
-        
+    private static int idUser;
+
+    public static int getIdUser() {
+        return idUser;
+    }
+
+    public static void setIdUser(int idUser) {
+        Sessao.idUser = idUser;
     }
     
-    public void consultarAdmin(){
-        
-    }
-   
-    public void alterarAdmin() {
-        
-    }
-        
 }

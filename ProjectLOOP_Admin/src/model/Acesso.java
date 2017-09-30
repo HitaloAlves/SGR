@@ -24,8 +24,6 @@ public class Acesso {
     private String message;
     
     private boolean acesso;
-    
-    private int UserId;
 
     public Acesso(String email, String senha) {
         this.email = email;
@@ -52,7 +50,7 @@ public class Acesso {
                     rs = stmt.executeQuery();
 
                     if (rs.next()) { // Se selecionar tupla, usuario logado
-                        this.UserId = rs.getInt("id"); // Sessao 
+                        Sessao.setIdUser(rs.getInt("id")); // Sessao 
                         this.acesso = true;
                     } else {
                         this.message = "Senha incorreta";
@@ -104,10 +102,6 @@ public class Acesso {
 
         return check;
 
-    }
-        
-    public int getUserId(){
-        return this.UserId;
     }
 
     public String getMessage() {

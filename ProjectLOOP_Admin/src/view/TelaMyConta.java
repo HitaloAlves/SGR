@@ -11,12 +11,12 @@ import model.Usuario;
  *
  * @author leonardo
  */
-public class TelaUsuario extends javax.swing.JInternalFrame {
+public class TelaMyConta extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form TelaUsuario1
      */
-    public TelaUsuario() {
+    public TelaMyConta() {
         initComponents();
         dadosUser();
         

@@ -14,12 +14,12 @@ import model.EventoObjeto;
  *
  * @author leonardo
  */
-public class TelaEvento extends javax.swing.JInternalFrame {
+public class TelaAdmin extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form TelaEvento1
      */
-    public TelaEvento() {
+    public TelaAdmin() {
         initComponents();
         readTable();
     }

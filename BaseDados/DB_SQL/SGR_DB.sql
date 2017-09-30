@@ -136,10 +136,6 @@ CREATE TABLE SGR_DB.Musicas (
     FOREIGN KEY (EstiloMusicais_id)
     REFERENCES SGR_DB.EstiloMusicais (id));
 
-create view locutor_listaMusica (nome) AS select li.nome from ListasMusica as li, Locutores as lo where lo.id = li.Locutores_idLocutores;
-create view radio_responsaveis (nome) AS select re.nome from Responsaveis as re, Radios as ra where ra.id = re.Radio_id;
-create view programasRadios_convidados (nome)AS select co.nome from Convidados as co, ProgramasRadio as tp where co.id = tp.TiposProgramasRadio_id; 
-
 -- -----------------------------------------------------
 -- ListasMusica_Musicas
 -- -----------------------------------------------------
@@ -179,3 +175,38 @@ CREATE TABLE SGR_DB.Admin (
   sexo VARCHAR(1) NULL,
   senha VARCHAR(45) NOT NULL,
   PRIMARY KEY (id));
+  
+  -- ---------------------------------------------------------
+-- Consultas, Gatilhos, Inserção... 
+-- ---------------------------------------------------------  
+create view listasMusicaDLocutor (nome,id) 
+AS select li.nome, li.id 
+from ListasMusica as li, Locutores as lo 
+where lo.id = li.Locutores_idLocutores;
+
+create view responsaveisDRadio (nome, telefone, email,cargos) 
+AS select re.nome, re.telefone, re.email, re.cargos 
+from Responsaveis as re, Radios as ra 
+where ra.id = re.Radio_id;
+
+create view convidadosDProgramasRadio (nome, telefone, email, sexo, obs)
+AS select co.nome, co.telefone, co.email, co.sexo, co.obs 
+from Convidados as co, ProgramasRadio as tp 
+where co.id = tp.TiposProgramasRadio_id;
+
+DELIMITER //
+create procedure quantidadeDMusicas (ListasMusica_id int, nome varchar(20) ) 
+BEGIN 
+select lmm.ListasMusica_id, lm.nome, count(*) 
+from ListasMusica_Musicas as lmm join ListasMusica as lm ON lmm.ListasMusica_id = lm.id -- Dá o id, nome e quantidade de musicas de cada lista.
+GROUP BY lmm.ListasMusica_id HAVING count(*)=0; 
+END; 
+// 
+
+DELIMITER // 
+create trigger TR_adicionarIdLista 
+after insert on ListasMusica for each row 
+BEGIN 
+insert into ListasMusica_Musicas (ListasMusica_id) values (ListasMusica (id)); -- insere o id da lista da musica na tabela N:N toda vez que é criada uma lista
+END;
+//

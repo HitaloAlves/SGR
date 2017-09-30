@@ -1,3 +1,111 @@
+<<<<<<< HEAD
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package model;
+
+import java.applet.Applet;
+import java.applet.AudioClip;
+import java.net.URL;
+
+/**
+ *
+ * @author leonardo
+ */
+public class Musica {
+    
+    private String nome;
+    private String estiloMusical;
+    private String nomeCantor;
+    private String banda;
+    private String album;
+    
+    public void playMusica(String nome){
+        URL url = getClass().getResource("../musicas/"+nome+".mp3");
+        AudioClip audio =  Applet.newAudioClip(url);
+        audio.play();
+    }
+    
+    
+    
+    public void pauseMusica(){
+        
+    }
+    
+    public void nextMusica(){
+        
+    }
+    
+    public void backMusica(){
+        
+    }
+    
+    public void volumeMusica(){
+        
+    }
+    
+    public void repetirMusica(){
+        
+    }
+    
+    public void criarListaMusica(){
+        
+    }
+    
+    public void cadastrarMusica(){
+        
+    }
+    
+    public void listarMusicas(){
+        
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getEstiloMusical() {
+        return estiloMusical;
+    }
+
+    public void setEstiloMusical(String estiloMusical) {
+        this.estiloMusical = estiloMusical;
+    }
+
+    public String getNomeCantor() {
+        return nomeCantor;
+    }
+
+    public void setNomeCantor(String nomeCantor) {
+        this.nomeCantor = nomeCantor;
+    }
+
+    public String getBanda() {
+        return banda;
+    }
+
+    public void setBanda(String banda) {
+        this.banda = banda;
+    }
+
+    public String getAlbum() {
+        return album;
+    }
+
+    public void setAlbum(String album) {
+        this.album = album;
+    }
+    
+    
+        
+}
+=======
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -91,3 +199,4 @@ public class Musica {
     
         
 }
+>>>>>>> 125eae0366e311b6a06fe7e8466f82ad936982c3

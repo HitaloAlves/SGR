@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -46,6 +47,8 @@ public class Locutor extends Pessoa{
             
 }
 =======
+=======
+>>>>>>> 125eae0366e311b6a06fe7e8466f82ad936982c3
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -96,4 +99,7 @@ public class Locutor extends Pessoa{
     
             
 }
+<<<<<<< HEAD
+>>>>>>> 125eae0366e311b6a06fe7e8466f82ad936982c3
+=======
 >>>>>>> 125eae0366e311b6a06fe7e8466f82ad936982c3

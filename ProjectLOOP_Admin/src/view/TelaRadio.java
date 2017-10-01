@@ -18,7 +18,7 @@ import model.ObjetoRadio;
  */
 public class TelaRadio extends javax.swing.JInternalFrame {
 
-    private ArrayList<ObjetoRadio> objRadio;
+    private List<ObjetoRadio> objRadio;
 
     /**
      * Creates new form TelaEvento1
@@ -64,7 +64,9 @@ public class TelaRadio extends javax.swing.JInternalFrame {
 
         Radio radio = new Radio();
         
-        for (ObjetoRadio rd : radio.listasRadios()) {
+        this.objRadio = radio.listasRadios();
+        
+        for (ObjetoRadio rd : this.objRadio) {
 
             modelo.addRow(new Object[]{
                 rd.getId(),
@@ -72,7 +74,6 @@ public class TelaRadio extends javax.swing.JInternalFrame {
                 rd.getCnpj()
             });
 
-            this.objRadio.add(rd); // Guadar todos dos dados
         }
         
         

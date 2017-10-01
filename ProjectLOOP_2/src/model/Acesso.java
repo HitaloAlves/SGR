@@ -1,4 +1,3 @@
-
 package model;
 
 import connection.ConnectionFactory;
@@ -18,21 +17,18 @@ public class Acesso {
     private final String senha;
     private String tableAcesso;
     private String message;
-    
+
     private boolean acesso;
 
     public Acesso(String email, String senha, int typeUser) {
         this.email = email;
         this.senha = senha;
-        
-        System.out.println(this.email);
-        System.out.println(this.senha);        
-        
+
         this.tableAcessoUser(typeUser); // setar Nome Tabela
-        
+
         this.fazerLogin();
     }
-    
+
     private void tableAcessoUser(int typeUser) {
         // Tipo 1: Radio, Tipo 2: Locutor
 
@@ -46,46 +42,64 @@ public class Acesso {
         }
 
     }
-    
+
     private void fazerLogin() {
-            if (verificarEmail()) {       
-            
+        if (verificarEmail()) {
+
             Connection con = ConnectionFactory.getConnection();
             PreparedStatement stmt = null;
 
             ResultSet rs = null;
 
-                try {
-                    
-                    String sql = "SELECT id FROM " + this.tableAcesso + " WHERE email = ? and senha = ?";
-                    
-                    stmt = con.prepareStatement(sql);
-                    stmt.setString(1, this.email);
-                    stmt.setString(2, this.senha);
+            try {
 
-                    rs = stmt.executeQuery();
+                String sql = "SELECT R.id, RB.Radio_id FROM " + this.tableAcesso + " R LEFT JOIN RadiosBloqueados RB ON RB.Radio_id = R.id WHERE R.email = ? and R.senha = ?";
 
-                    if (rs.next()) { // Se selecionar tupla, usuario logado
+                stmt = con.prepareStatement(sql);
+                stmt.setString(1, this.email);
+                stmt.setString(2, this.senha);
+
+                rs = stmt.executeQuery();
+
+                if (rs.next()) { // Se selecionar tupla, usuario logado
+                    
+                    if (this.verficarBloqueio(rs.getInt("RB.Radio_id"), rs.getInt("R.id")))  {
+                        this.message = "Sua conta foi Bloqueada, entre em conta com SRG";
+                        this.acesso = false;
+                    } else {
                         Sessao.setIdUser(rs.getInt("id")); // Sessao 
                         Sessao.setNomeTableUser(this.tableAcesso);
                         this.acesso = true;
-                    } else {
-                        this.message = "Senha incorreta";
-                        this.acesso = false;
                     }
 
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(null, "Erro ao Realizar Login" + ex);
-                    this.message = "Erro ao Realizar Login";
+                } else {
+                    this.message = "Senha incorreta";
                     this.acesso = false;
-                } finally {
-                    ConnectionFactory.closeConnection(con, stmt, rs);
                 }
+
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Erro ao Realizar Login" + ex);
+                this.message = "Erro ao Realizar Login";
+                this.acesso = false;
+            } finally {
+                ConnectionFactory.closeConnection(con, stmt, rs);
+            }
 
         } else {
             this.message = "Email não está cadastrado";
             this.acesso = false;
         }
+    }
+
+    private boolean verficarBloqueio(int id_bloqueio, int id_user) {
+
+        boolean check = false;
+
+        if (id_user == id_bloqueio) {
+            check = true;
+        }
+
+        return check;
     }
 
     private boolean verificarEmail() {
@@ -124,11 +138,9 @@ public class Acesso {
     public String getMessage() {
         return this.message;
     }
-    
-    public boolean getAcesso(){
+
+    public boolean getAcesso() {
         return this.acesso;
     }
 
 }
-
-

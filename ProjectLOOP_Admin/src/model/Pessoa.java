@@ -14,6 +14,7 @@ public class Pessoa {
     private String nome;
     private String telefone;
     private String email;
+    private String senha;
     private int cpf;
     private String sexo;
 
@@ -56,6 +57,16 @@ public class Pessoa {
     public void setSexo(String sexo) {
         this.sexo = sexo;
     }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+    
+    
     
         
        

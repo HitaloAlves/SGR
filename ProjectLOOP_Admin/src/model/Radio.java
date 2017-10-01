@@ -41,7 +41,7 @@ public class Radio {
         List<ObjetoRadio> radioObj = new ArrayList<>();
 
         try {
-            stmt = con.prepareStatement("select * from Radios");
+                stmt = con.prepareStatement("SELECT * FROM Radios R LEFT JOIN RadiosBloqueados RB ON R.id = RB.Radio_id");
 
             rs = stmt.executeQuery();
 
@@ -51,21 +51,28 @@ public class Radio {
 
                 radio.setId(rs.getInt("id"));
                 radio.setNome(rs.getString("nome"));
-//                radio.setTelefone(rs.getString("telefone"));
-//                radio.setEmail(rs.getString("email"));
-//                radio.setSenha(rs.getString("senha"));
-//                radio.setModulacao(rs.getString("modulacao"));
-//                radio.setFrequencia(rs.getDouble("modulacao"));
-//                radio.setSiteRadio(rs.getString("site"));
-//                radio.setCep(rs.getInt("cep"));
-//                radio.setComplemento(rs.getString("complemento"));
+                radio.setTelefone(rs.getString("telefone"));
+                radio.setEmail(rs.getString("email"));
+                radio.setSenha(rs.getString("senha"));
+                radio.setModulacao(rs.getString("modulacao"));
+                radio.setFrequencia(rs.getDouble("frequencia"));
+                radio.setSiteRadio(rs.getString("site"));
+                radio.setCep(rs.getInt("cep"));
+                radio.setComplemento(rs.getString("complemento"));
                 radio.setCnpj(rs.getString("cnpj"));
+                
+                
+                if(rs.getInt("Radio_id") == rs.getInt("id")){
+                    radio.setRadioBloqueada(true);
+                }else {
+                    radio.setRadioBloqueada(false);
+                }
 
                 radioObj.add(radio);
             }
 
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao Atualizar" + ex);
+            JOptionPane.showMessageDialog(null, "Erro ao Listar" + ex);
         } finally {
             ConnectionFactory.closeConnection(con, stmt, rs);
         }
@@ -84,7 +91,7 @@ public class Radio {
         List<ObjetoRadio> radioObj = new ArrayList<>();
 
         try {
-            stmt = con.prepareStatement("SELECT * FROM Radios WHERE nome LIKE ?");
+            stmt = con.prepareStatement("SELECT * FROM Radios R LEFT JOIN RadiosBloqueados RB ON R.id = RB.Radio_id WHERE R.nome LIKE ?");
             stmt.setString(1, "%" + search + "%");
 
             rs = stmt.executeQuery();
@@ -95,13 +102,27 @@ public class Radio {
 
                 radio.setId(rs.getInt("id"));
                 radio.setNome(rs.getString("nome"));
+                radio.setTelefone(rs.getString("telefone"));
+                radio.setEmail(rs.getString("email"));
+                radio.setSenha(rs.getString("senha"));
+                radio.setModulacao(rs.getString("modulacao"));
+                radio.setFrequencia(rs.getDouble("frequencia"));
+                radio.setSiteRadio(rs.getString("site"));
+                radio.setCep(rs.getInt("cep"));
+                radio.setComplemento(rs.getString("complemento"));
                 radio.setCnpj(rs.getString("cnpj"));
+                
+                if(rs.getInt("Radio_id") == rs.getInt("id")){
+                    radio.setRadioBloqueada(true);
+                }else {
+                    radio.setRadioBloqueada(false);
+                }
 
                 radioObj.add(radio);
             }
 
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao Atualizar" + ex);
+            JOptionPane.showMessageDialog(null, "Erro ao Buscar" + ex);
         } finally {
             ConnectionFactory.closeConnection(con, stmt, rs);
         }
@@ -115,7 +136,7 @@ public class Radio {
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement("UPDATE Radios SET nome = ? , telefone = ?, email = ?, modulacao = ?, frequencia = ?, site = ?, cep = ?, complem = ?, cnpj = ?, senha WHERE id = ?");
+            stmt = con.prepareStatement("UPDATE Radios SET nome = ? , telefone = ?, email = ?, modulacao = ?, frequencia = ?, site = ?, cep = ?, complemento = ?, cnpj = ?, senha = ? WHERE id = ?");
             stmt.setString(1, nome);
             stmt.setString(2, telefone);
             stmt.setString(3, email);
@@ -130,11 +151,12 @@ public class Radio {
 
             int rowsUpdated = stmt.executeUpdate();;
             if (rowsUpdated > 0) {
+                
                 JOptionPane.showMessageDialog(null, "Alteração Realizada com Sucesso");
             }
 
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao Atualizar" + ex);
+            JOptionPane.showMessageDialog(null, "Erro ao Alterar" + ex);
         } finally {
             ConnectionFactory.closeConnection(con, stmt);
         }
@@ -153,7 +175,7 @@ public class Radio {
         boolean check = false;
 
         try {
-            stmt = con.prepareStatement("INSERT INTO Radios(nome, telefone, email, modulacao, frequencia, site, cep, complem, cnpj, senha) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            stmt = con.prepareStatement("INSERT INTO Radios(nome, telefone, email, modulacao, frequencia, site, cep, complemento, cnpj, senha) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             stmt.setString(1, nome);
             stmt.setString(2, telefone);
             stmt.setString(3, email);

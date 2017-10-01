@@ -22,6 +22,8 @@ public class ObjetoRadio {
     private int cep;
     private String complemento;
     private String cnpj;
+    
+    private boolean radioBloqueada;
 
     public int getId() {
         return id;
@@ -110,6 +112,15 @@ public class ObjetoRadio {
     public void setCnpj(String cnpj) {
         this.cnpj = cnpj;
     }
+
+    public boolean getRadioBloqueada() {
+        return radioBloqueada;
+    }
+
+    public void setRadioBloqueada(boolean radioBloqueada) {
+        this.radioBloqueada = radioBloqueada;
+    }
+    
     
     
     

@@ -100,7 +100,7 @@ public class TelaRadioAdd extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
-        setTitle("Eventos");
+        setTitle("Adicionar Radio");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Dados Rádio"));
 

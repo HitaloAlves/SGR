@@ -5,7 +5,6 @@
  */
 package view;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -63,40 +62,72 @@ public class TelaRadio extends javax.swing.JInternalFrame {
         modelo.setNumRows(0); // Limpando a tabela
 
         Radio radio = new Radio();
-        
+
         this.objRadio = radio.listasRadios();
-        
+
         for (ObjetoRadio rd : this.objRadio) {
+            
+            String status = rd.getRadioBloqueada() == true ? "Bloqueado" : "OK";
 
             modelo.addRow(new Object[]{
                 rd.getId(),
                 rd.getNome(),
-                rd.getCnpj()
+                rd.getCnpj(),
+                status
             });
 
         }
-        
-        
+
     }
 
     public void readTableForSearch(String search) {
         DefaultTableModel modelo = (DefaultTableModel) jTEventos.getModel();
+        
 
         modelo.setNumRows(0); // Limpando a tabela
 
         Radio radio = new Radio();
 
-        for (ObjetoRadio rd : radio.searchRadio(search)) { // Pesquisando no banco usando LIKE, Se existe algo no mesmo
+        this.objRadio = radio.searchRadio(search);
 
+        for (ObjetoRadio rd : this.objRadio) { // Pesquisando no banco usando LIKE, Se existe algo no mesmo
+            
+            String status = rd.getRadioBloqueada() == true ? "Bloqueado" : "OK";
+            
             modelo.addRow(new Object[]{ // Adicionando dados na tabela
                 rd.getId(),
                 rd.getNome(),
-                rd.getCnpj()
+                rd.getCnpj(),
+                status
             });
 
-            this.objRadio.add(rd); // Guadar todos dos dados
         }
+        
+
     }
+
+//    private JComponent CoresTable(DefaultTableModel defaulTableModel) {
+//        JTable jTable = new JTable(defaulTableModel) {
+//
+//            @Override
+//            public Component prepareRenderer(TableCellRenderer renderer, int row, int colunm ) {
+//                Component component = super.prepareRenderer(renderer, row, colunm);
+//                
+//                int linha = convertRowIndexToModel(row);
+//                
+//                String status = (String) getModel().getValueAt(linha, 3);
+//                
+//                if("Bloqueado".equals(status) ){
+//                    component.setBackground(Color.RED);
+//                }
+//                
+//                return component;
+//            }
+//        };
+//        
+//        return new JScrollPane(jTable);
+//        
+//    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -152,18 +183,20 @@ public class TelaRadio extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
-        setTitle("Eventos");
+        setResizable(true);
+        setTitle("Radios");
+        setToolTipText("");
 
         jTEventos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Nome", "CNPJ"
+                "ID", "Nome", "CNPJ", "Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -331,7 +364,7 @@ public class TelaRadio extends javax.swing.JInternalFrame {
 
         jLabel12.setText("Modulação:");
 
-        modulacaoRadio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "FM", "AM", "WEBRADIO" }));
+        modulacaoRadio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "      ", "FM", "AM", "WEBRADIO" }));
 
         try {
             cepRadio.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##.###-###")));
@@ -352,15 +385,15 @@ public class TelaRadio extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addGap(18, 18, 18)
-                                .addComponent(frequenciaRadio))
+                                .addComponent(frequenciaRadio, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addGap(18, 18, 18)
-                                .addComponent(nomeRadio, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(nomeRadio, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -372,31 +405,27 @@ public class TelaRadio extends javax.swing.JInternalFrame {
                                 .addGap(26, 26, 26)
                                 .addComponent(modulacaoRadio, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(siteRadio))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cnpjRadio, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(siteRadio, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(14, 14, 14)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel9)
-                                .addGap(18, 18, 18)
-                                .addComponent(cepRadio, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel10)
-                                .addGap(18, 18, 18)
-                                .addComponent(compCepRadio, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(214, Short.MAX_VALUE))
+                        .addComponent(jLabel9)
+                        .addGap(18, 18, 18)
+                        .addComponent(cepRadio, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cnpjRadio, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel10)
+                        .addGap(18, 18, 18)
+                        .addComponent(compCepRadio, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(0, 399, Short.MAX_VALUE)
+                    .addGap(0, 290, Short.MAX_VALUE)
                     .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 400, Short.MAX_VALUE)))
+                    .addGap(0, 290, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -512,10 +541,10 @@ public class TelaRadio extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -523,9 +552,8 @@ public class TelaRadio extends javax.swing.JInternalFrame {
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -591,34 +619,40 @@ public class TelaRadio extends javax.swing.JInternalFrame {
                 int check = JOptionPane.showConfirmDialog(null, "Confirma a alteração", "Alteração", JOptionPane.YES_NO_OPTION);
 
                 if (check == 0) {
-                        
-                        Radio altearR = new Radio();
 
-                        //            replaceAll("[^0-9]", "") Deixar somente números
-                        altearR.setNome(nomeRadio.getText());
-                        altearR.setTelefone(telefoneRadio.getText().replaceAll("[^0-9]", ""));
-                        altearR.setEmail(emailRadio.getText());
-                        altearR.setModulacao(modulacaoRadio.getSelectedItem().toString());
+                    Radio altearR = new Radio();
 
-                        // Transformar valor em formato número americano
-                        String formatNumeroFre = frequenciaRadio.getText().replaceAll("\\.", "");
-                        altearR.setFrequencia(Double.parseDouble(formatNumeroFre.replace(',', '.')));
+                    //            replaceAll("[^0-9]", "") Deixar somente números
+                    altearR.setNome(nomeRadio.getText());
+                    altearR.setTelefone(telefoneRadio.getText().replaceAll("[^0-9]", ""));
+                    altearR.setEmail(emailRadio.getText());
+                    altearR.setModulacao(modulacaoRadio.getSelectedItem().toString());
 
-                        altearR.setSiteRadio(siteRadio.getText());
-                        altearR.setCep(Integer.parseInt(cepRadio.getText().replaceAll("[^0-9]", "")));
-                        altearR.setComplemento(compCepRadio.getText());
-                        altearR.setCnpj(cnpjRadio.getText().replaceAll("[^0-9]", ""));
-                        altearR.setEmail(emailRadio.getText());
-                        altearR.setSenha(senhaRadio.getText());
-                        
-                        altearR.getAlterarRadio();
+                    // Transformar valor em formato número americano
+                    String formatNumeroFre = frequenciaRadio.getText().replaceAll("\\.", "");
+                    altearR.setFrequencia(Double.parseDouble(formatNumeroFre.replace(',', '.')));
 
-                        readTable();
-                    }
+                    altearR.setSiteRadio(siteRadio.getText());
+                    altearR.setCep(Integer.parseInt(cepRadio.getText().replaceAll("[^0-9]", "")));
+                    altearR.setComplemento(compCepRadio.getText());
+                    altearR.setCnpj(cnpjRadio.getText().replaceAll("[^0-9]", ""));
+                    altearR.setEmail(emailRadio.getText());
+                    altearR.setSenha(senhaRadio.getText());
 
+                    altearR.setIdRadio(Integer.parseInt(jTEventos.getValueAt(jTEventos.getSelectedRow(), 0).toString()));
+
+                    System.out.println(Integer.parseInt(jTEventos.getValueAt(jTEventos.getSelectedRow(), 0).toString()));
+
+                    altearR.getAlterarRadio();
+
+                    readTable();
                 }
 
             }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecione um rádio para alterar");
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed

@@ -3,6 +3,7 @@ package model;
 import connection.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import javax.swing.JOptionPane;
@@ -11,19 +12,57 @@ import javax.swing.JOptionPane;
  *
  * @author leonardo
  */
-public class Locutor extends Pessoa{
-    
+public class Locutor extends Pessoa {
+
     private Date dataNascimento;
-    
-    private boolean criarLocutor(){
-        
+
+    public void consultarLocutorSessao() {
+
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+
+        ResultSet rs = null;
+
+        ObjetoLocutor locutor = new ObjetoLocutor();
+
+        try {
+
+            stmt = con.prepareStatement("SELECT * FROM Locutores WHERE id = ?");
+
+            stmt.setInt(1, Sessao.getIdUser());
+
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+
+                locutor.setNome(rs.getString("nome"));
+                locutor.setTelefone(rs.getString("telefone"));
+                locutor.setEmail(rs.getString("email"));
+                locutor.setSenha(rs.getString("senha"));
+                locutor.setCpf(rs.getString("cpf"));
+                locutor.setSexo(rs.getString("sexo"));              
+
+                locutor.setDataNascimento(java.sql.Date.valueOf(rs.getString("dataNasc")));
+
+                Sessao.setDadosUser(locutor);
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro pegar dados Radio" + ex);
+        } finally {
+            ConnectionFactory.closeConnection(con, stmt, rs);
+        }
+    }
+
+    private boolean criarLocutor() {
+
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null;
 
         boolean check = false;
 
         try {
-            stmt = con.prepareStatement("INSERT INTO Locutor(nome, telefone, email, cpf, sexo, dataNasc, senha, Radio_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+            stmt = con.prepareStatement("INSERT INTO Locutores(nome, telefone, email, cpf, sexo, dataNasc, senha, Radio_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
             stmt.setString(1, this.getNome());
             stmt.setString(2, this.getTelefone());
             stmt.setString(3, this.getEmail());
@@ -47,23 +86,23 @@ public class Locutor extends Pessoa{
         }
 
         return check;
-        
+
     }
-    
-    public boolean getCriarLocutor(){
+
+    public boolean getCriarLocutor() {
         return this.criarLocutor();
     }
-    
-    public void consultarLocutor(){
-        
+
+    public void consultarLocutor() {
+
     }
-    
-    private void excluirLocutor(){
-        
+
+    private void excluirLocutor() {
+
     }
-    
-    private void alterarLocutor(){
-        
+
+    private void alterarLocutor() {
+
     }
 
     public Date getDataNascimento() {
@@ -73,9 +112,5 @@ public class Locutor extends Pessoa{
     public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
-    
-       
-    
-    
-            
+
 }

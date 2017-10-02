@@ -43,8 +43,6 @@ public class TelaPrincipalLocutor extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
-        jMenu4 = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -110,7 +108,7 @@ public class TelaPrincipalLocutor extends javax.swing.JFrame {
         jMenuBar1.add(jMenu2);
 
         jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/calendar.png"))); // NOI18N
-        jMenu3.setText("Radios");
+        jMenu3.setText("Musicas");
         jMenu3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenu3ActionPerformed(evt);
@@ -118,7 +116,7 @@ public class TelaPrincipalLocutor extends javax.swing.JFrame {
         });
 
         jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem3.setText("Show");
+        jMenuItem3.setText("Listas Músicas");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem3ActionPerformed(evt);
@@ -127,7 +125,7 @@ public class TelaPrincipalLocutor extends javax.swing.JFrame {
         jMenu3.add(jMenuItem3);
 
         jMenuItem8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
-        jMenuItem8.setText("Adicionar");
+        jMenuItem8.setText("Adicionar Música");
         jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem8ActionPerformed(evt);
@@ -136,25 +134,6 @@ public class TelaPrincipalLocutor extends javax.swing.JFrame {
         jMenu3.add(jMenuItem8);
 
         jMenuBar1.add(jMenu3);
-
-        jMenu4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/book_open.png"))); // NOI18N
-        jMenu4.setText("Admins");
-        jMenu4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu4ActionPerformed(evt);
-            }
-        });
-
-        jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem4.setText("Show");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
-            }
-        });
-        jMenu4.add(jMenuItem4);
-
-        jMenuBar1.add(jMenu4);
 
         setJMenuBar(jMenuBar1);
 
@@ -194,11 +173,6 @@ public class TelaPrincipalLocutor extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jMenu2ActionPerformed
 
-    // Receitas
-    private void jMenu4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenu4ActionPerformed
-
     
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:        
@@ -214,7 +188,7 @@ public class TelaPrincipalLocutor extends javax.swing.JFrame {
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
 
-        TelaRadio telaRadio = new TelaRadio();
+        TelaListaMusica telaRadio = new TelaListaMusica();
         
         // Centralizar
         telaRadio.setLocation(
@@ -225,14 +199,6 @@ public class TelaPrincipalLocutor extends javax.swing.JFrame {
         jDesktopPane1.add(telaRadio);        
         telaRadio.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
-
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        // TODO add your handling code here:
-        
-        TelaAdmin telaAdmin = new TelaAdmin();
-        jDesktopPane1.add(telaAdmin);
-        telaAdmin.setVisible(true);
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
@@ -251,7 +217,7 @@ public class TelaPrincipalLocutor extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        TelaRadioAdd telaRadio = new TelaRadioAdd();
+        TelaMusicaAdd telaRadio = new TelaMusicaAdd();
         jDesktopPane1.add(telaRadio);
         telaRadio.setVisible(true);
     }//GEN-LAST:event_jMenuItem8ActionPerformed
@@ -302,12 +268,10 @@ public class TelaPrincipalLocutor extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables

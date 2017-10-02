@@ -1,15 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
+
+import java.util.Date;
 
 /**
  *
  * @author leonardo
  */
-public class ObjetoPessoa {
+
+public class ObjetoLocutor {
+    
+    private Date dataNascimento;
     
     private String nome;
     private String telefone;
@@ -17,6 +17,14 @@ public class ObjetoPessoa {
     private String senha;
     private String cpf;
     private String sexo;
+
+    public Date getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(Date dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
 
     public String getNome() {
         return nome;
@@ -42,6 +50,14 @@ public class ObjetoPessoa {
         this.email = email;
     }
 
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
     public String getCpf() {
         return cpf;
     }
@@ -57,16 +73,5 @@ public class ObjetoPessoa {
     public void setSexo(String sexo) {
         this.sexo = sexo;
     }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-    
-    
-        
-       
+                
 }

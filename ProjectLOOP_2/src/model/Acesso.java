@@ -37,7 +37,7 @@ public class Acesso {
                 this.tableAcesso = "Radios";
                 break;
             case 2:
-                this.tableAcesso = "Locutor";
+                this.tableAcesso = "Locutores";
                 break;
         }
 
@@ -51,9 +51,12 @@ public class Acesso {
 
             ResultSet rs = null;
 
+            String sqlLocutor = "SELECT L.id, L.Radio_id, RB.Radio_id FROM " + this.tableAcesso + " L LEFT JOIN RadiosBloqueados RB ON RB.Radio_id = L.Radio_id WHERE L.email = ? and L.senha = ?";
+            String sqlRadio = "SELECT R.id, RB.Radio_id FROM " + this.tableAcesso + " R LEFT JOIN RadiosBloqueados RB ON RB.Radio_id = R.id WHERE R.email = ? and R.senha = ?";
+
             try {
 
-                String sql = "SELECT R.id, RB.Radio_id FROM " + this.tableAcesso + " R LEFT JOIN RadiosBloqueados RB ON RB.Radio_id = R.id WHERE R.email = ? and R.senha = ?";
+                String sql = "Radios".equals(this.tableAcesso) ? sqlRadio : sqlLocutor; // Selecionar sql adequando ao acesso;
 
                 stmt = con.prepareStatement(sql);
                 stmt.setString(1, this.email);
@@ -62,14 +65,26 @@ public class Acesso {
                 rs = stmt.executeQuery();
 
                 if (rs.next()) { // Se selecionar tupla, usuario logado
-                    
-                    if (this.verficarBloqueio(rs.getInt("RB.Radio_id"), rs.getInt("R.id")))  {
-                        this.message = "Sua conta foi Bloqueada, entre em conta com SRG";
-                        this.acesso = false;
-                    } else {
-                        Sessao.setIdUser(rs.getInt("id")); // Sessao 
-                        Sessao.setNomeTableUser(this.tableAcesso);
-                        this.acesso = true;
+
+                    if ("Radios".equals(this.tableAcesso)) { // Verficação para Radio
+                        if (this.verficarBloqueio(rs.getInt("RB.Radio_id"), rs.getInt("R.id"))) {
+                            this.message = "Sua conta foi Bloqueada, entre em conta com SRG";
+                            this.acesso = false;
+                        } else {
+                            Sessao.setIdUser(rs.getInt("id")); // Sessao id                           
+                            Sessao.setNomeTableUser(this.tableAcesso);
+                            this.acesso = true;
+                        }
+                    } else { // Verificação para o Locutor
+                        if (this.verficarBloqueio(rs.getInt("RB.Radio_id"), rs.getInt("L.Radio_id"))) {
+                            this.message = "Sua conta foi Bloqueada, entre em conta com SRG";
+                            this.acesso = false;
+                        } else {
+                            Sessao.setIdUser(rs.getInt("id")); // Sessao id
+                            Sessao.setIdRadio(rs.getInt("L.Radio_id"));
+                            Sessao.setNomeTableUser(this.tableAcesso);
+                            this.acesso = true;
+                        }
                     }
 
                 } else {

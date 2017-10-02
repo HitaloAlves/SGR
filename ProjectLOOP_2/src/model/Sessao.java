@@ -10,44 +10,74 @@ package model;
  * @author leonardo
  */
 public final class Sessao {
-    
+
     private static int idUser;
+    
+    private static int idRadio;
+
     private static String nomeTableUser;
-    
-    private static ObjetoPessoa tadosUser;
 
-    public static ObjetoPessoa getTadosUser() {
-        return tadosUser;
+    private static ObjetoLocutor dadosUser;
+
+    private static ObjetoRadio dadosRadio;
+
+    public static ObjetoLocutor getDadosUser() {
+        return dadosUser;
     }
 
-    public static void setTadosUser(ObjetoPessoa tadosUser) {
-        Sessao.tadosUser = tadosUser;
+    public static void setDadosUser(ObjetoLocutor dadosUser) {
+        Sessao.dadosUser = dadosUser;
     }
 
-    
+    public static ObjetoRadio getDadosRadio() {
+        return dadosRadio;
+    }
+
+    public static void setDadosRadio(ObjetoRadio dadosRadio) {
+        Sessao.dadosRadio = dadosRadio;
+    }
+
     public static int getIdUser() {
         return idUser;
     }
 
     public static void setIdUser(int idUser) {
-        Sessao.idUser = idUser;
-        Sessao.buscarDadosUser();       
+        Sessao.idUser = idUser;        
     }
 
+    public static int getIdRadio() {
+        return idRadio;
+    }
+
+    public static void setIdRadio(int idRadio) {
+        Sessao.idRadio = idRadio;
+    }
+    
+    
+
     public static String getNomeTableUser() {
-        return nomeTableUser;
+        return nomeTableUser;        
     }
 
     public static void setNomeTableUser(String nomeTableUser) {
         Sessao.nomeTableUser = nomeTableUser;
+        Sessao.buscarDados();
     }
-    
-    private static void buscarDadosUser(){
-        
+
+    private static void buscarDados() {
+
+        if ("Radios".equals(Sessao.nomeTableUser)) {
+            Radio radio = new Radio();
+            radio.consultarRadioSessao();
+        } else {
+            Locutor locutor = new Locutor();
+            locutor.consultarLocutorSessao();
+        }
+
     }
-    
-    public static void atualizarDadosUser(){
-        Sessao.buscarDadosUser();
+
+    public static void atualizarDados() {
+        Sessao.buscarDados();
     }
-    
+
 }

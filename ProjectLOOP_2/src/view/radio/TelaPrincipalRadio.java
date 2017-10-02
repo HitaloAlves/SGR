@@ -1,6 +1,5 @@
 package view.radio;
 
-import view.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
@@ -229,6 +228,7 @@ public class TelaPrincipalRadio extends javax.swing.JFrame {
         TelaMyConta telaUser = new TelaMyConta();
         jDesktopPane1.add(telaUser);
         telaUser.setVisible(true);
+        
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed

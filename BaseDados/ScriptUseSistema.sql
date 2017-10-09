@@ -113,7 +113,7 @@ CREATE TABLE `ListasMusica` (
   KEY `fk_ListasMusica_Radios1_idx` (`Radios_idRadios`),
   CONSTRAINT `fk_ListasMusica_Locutores1` FOREIGN KEY (`Locutores_idLocutores`) REFERENCES `Locutores` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_ListasMusica_Radios1` FOREIGN KEY (`Radios_idRadios`) REFERENCES `Radios` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -122,7 +122,7 @@ CREATE TABLE `ListasMusica` (
 
 LOCK TABLES `ListasMusica` WRITE;
 /*!40000 ALTER TABLE `ListasMusica` DISABLE KEYS */;
-INSERT INTO `ListasMusica` VALUES (1,'Músicas de Natal',2,2);
+INSERT INTO `ListasMusica` VALUES (1,'Rock 2000',2,2),(2,'Músicas 2017',2,2),(3,'Iron Maiden',2,2),(4,'Lililianne Play List',2,2);
 /*!40000 ALTER TABLE `ListasMusica` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -150,6 +150,7 @@ CREATE TABLE `ListasMusica_Musicas` (
 
 LOCK TABLES `ListasMusica_Musicas` WRITE;
 /*!40000 ALTER TABLE `ListasMusica_Musicas` DISABLE KEYS */;
+INSERT INTO `ListasMusica_Musicas` VALUES (1,2),(2,2),(1,3),(2,3),(1,4),(3,5),(4,6);
 /*!40000 ALTER TABLE `ListasMusica_Musicas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -195,15 +196,20 @@ DROP TABLE IF EXISTS `Musicas`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Musicas` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nome` varchar(20) NOT NULL,
-  `nomeCantor` varchar(15) NOT NULL,
-  `banda` varchar(15) NOT NULL,
-  `album` varchar(15) NOT NULL,
+  `nome` varchar(100) DEFAULT NULL,
+  `nomeCantor` varchar(45) DEFAULT NULL,
+  `banda` varchar(45) DEFAULT NULL,
+  `album` varchar(45) DEFAULT NULL,
   `EstiloMusicais_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
+  `nomeFileMusica` varchar(100) DEFAULT NULL,
+  `Locutores_id` int(11) NOT NULL,
+  `Locutores_Radio_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`,`Locutores_id`,`Locutores_Radio_id`),
   KEY `fk_Musicas_EstiloMusicais1_idx` (`EstiloMusicais_id`),
-  CONSTRAINT `fk_Musicas_EstiloMusicais1` FOREIGN KEY (`EstiloMusicais_id`) REFERENCES `EstiloMusicais` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  KEY `fk_Musicas_Locutores1_idx` (`Locutores_id`,`Locutores_Radio_id`),
+  CONSTRAINT `fk_Musicas_EstiloMusicais1` FOREIGN KEY (`EstiloMusicais_id`) REFERENCES `EstiloMusicais` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Musicas_Locutores1` FOREIGN KEY (`Locutores_id`, `Locutores_Radio_id`) REFERENCES `Locutores` (`id`, `Radio_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -212,7 +218,7 @@ CREATE TABLE `Musicas` (
 
 LOCK TABLES `Musicas` WRITE;
 /*!40000 ALTER TABLE `Musicas` DISABLE KEYS */;
-INSERT INTO `Musicas` VALUES (1,'Saudades','Eduardo Costa','Eduardo Costa','No Buteco II',25);
+INSERT INTO `Musicas` VALUES (2,'Amo Só você','Mc Marcinho','Mc marcinho','Funk 2000',26,'MAmo So voce_Mc Marcinho.mp3',2,2),(3,'Amo você','Mc Marcinho','Mc Marcinho','Funk 2000',26,'MAmo_voce_Mc_Marcinho.mp3',2,2),(4,'Aces High ','Iron Maiden','Iron Maiden','Iron Maiden',23,'Aces_High__Iron_Maiden.mp3',2,2),(5,'Afraid to Shoot Strangers','Iron Maiden ','Iron Maiden ','Iron Maiden 2000',26,'Afraid_to_Shoot_Strangers_Iron_Maiden_.mp3',2,2),(6,'Someone Like You','Adele','Adele','Adele 2013',16,'Someone_Like_You_Adele.mp3',2,2);
 /*!40000 ALTER TABLE `Musicas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -305,7 +311,7 @@ CREATE TABLE `Radios` (
 
 LOCK TABLES `Radios` WRITE;
 /*!40000 ALTER TABLE `Radios` DISABLE KEYS */;
-INSERT INTO `Radios` VALUES (1,'Serra Grande 2018','88998765352','serragrandefm2@gmail.com','WEBRADIO',997,'www.serragrandefm.com.br',62390000,'Posto de Gasolina','87367282000134','serra2017'),(2,'Serra Grande FM','88998765352','serragrandefm@gmail.com','AM',99.7,'www.serragrandefm.com.br',62390000,'Posto de Gasolina','87367282000134','serra2017'),(3,'Serra Grande FM','88998373832','serragrandefm@gmail.com','FM',88.7,'www.serragrandefm.com.br',62390000,'Posto de Gasolina','09838373000123','serrgrande2017');
+INSERT INTO `Radios` VALUES (1,'Gi WebRadio','61983737663','giwr@gmail.com','WEBRADIO',887,'www.giwr.com.br',72345900,'Ao lado Unieuro','87467482000134','gi2017'),(2,'Serra Grande FM','88998765352','serragrandefm@gmail.com','AM',99.7,'www.serragrandefm.com.br',62390000,'Posto de Gasolina','87367282000134','serra2017'),(3,'Unieuro FM','88998373832','unieurofm@gmail.com','FM',100.8,'www.unieurofm.com.br',72390000,'Posto de Gasolina','09838373000123','unieuro2017');
 /*!40000 ALTER TABLE `Radios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -329,7 +335,6 @@ CREATE TABLE `RadiosBloqueados` (
 
 LOCK TABLES `RadiosBloqueados` WRITE;
 /*!40000 ALTER TABLE `RadiosBloqueados` DISABLE KEYS */;
-INSERT INTO `RadiosBloqueados` VALUES (1),(3);
 /*!40000 ALTER TABLE `RadiosBloqueados` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -399,4 +404,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-10-02  0:11:55
+-- Dump completed on 2017-10-09 14:33:34

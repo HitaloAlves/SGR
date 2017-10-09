@@ -37,7 +37,7 @@ public class TelaListaMusica extends javax.swing.JInternalFrame {
         if (nomeLista.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Preencha o campo Nome");
             check = false;
-        } 
+        }
 
         return check;
     }
@@ -52,16 +52,16 @@ public class TelaListaMusica extends javax.swing.JInternalFrame {
         this.objListaM = listaM.listasListasMusicas();
 
         for (ObjetoListaMusica lm : this.objListaM) {
-            
+
             modelo.addRow(new Object[]{
                 lm.getIdLista(),
-                lm.getNome()                
+                lm.getNome()
             });
 
         }
 
     }
-    
+
     public void readTableMusica() {
         DefaultTableModel modelo = (DefaultTableModel) jTMusicas.getModel();
 
@@ -71,8 +71,8 @@ public class TelaListaMusica extends javax.swing.JInternalFrame {
 
         this.objMusica = musica.listarListasMusicas();
 
-        for (ObjetoMusica m : this.objMusica) {        
-            
+        for (ObjetoMusica m : this.objMusica) {
+
             modelo.addRow(new Object[]{
                 m.getIdMusica(),
                 m.getNome(),
@@ -107,7 +107,6 @@ public class TelaListaMusica extends javax.swing.JInternalFrame {
 //            });
 //
 //        }
-        
 
     }
 
@@ -133,7 +132,6 @@ public class TelaListaMusica extends javax.swing.JInternalFrame {
 //        return new JScrollPane(jTable);
 //        
 //    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -148,12 +146,13 @@ public class TelaListaMusica extends javax.swing.JInternalFrame {
         jPanel3 = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
+        jPanel6 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTListaM = new javax.swing.JTable();
+        jLabel4 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jButton4 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jInternalFrame1 = new javax.swing.JInternalFrame();
         jPanel2 = new javax.swing.JPanel();
@@ -177,7 +176,7 @@ public class TelaListaMusica extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setMaximizable(true);
         setResizable(true);
-        setTitle("Radios");
+        setTitle("Lista Musica");
         setToolTipText("");
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
@@ -196,21 +195,6 @@ public class TelaListaMusica extends javax.swing.JInternalFrame {
             }
         });
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
-
-        jLabel4.setText("Pesquisar Lista");
-
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/zoom.png"))); // NOI18N
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pencil_delete.png"))); // NOI18N
         jButton5.setText("Excluir Lista");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -218,6 +202,8 @@ public class TelaListaMusica extends javax.swing.JInternalFrame {
                 jButton5ActionPerformed(evt);
             }
         });
+
+        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Listas Músicas"));
 
         jTListaM.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -247,29 +233,67 @@ public class TelaListaMusica extends javax.swing.JInternalFrame {
         });
         jScrollPane2.setViewportView(jTListaM);
 
+        jLabel4.setText("Pesquisar Lista");
+
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/zoom.png"))); // NOI18N
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(29, 29, 29)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton4)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4))
+                    .addComponent(jButton4))
+                .addGap(5, 5, 5)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton4))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
+                        .addGap(124, 124, 124)
                         .addComponent(jButton2)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                         .addComponent(jButton5)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton3)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(26, 26, 26)
+                        .addComponent(jButton3)
+                        .addContainerGap())))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -279,14 +303,8 @@ public class TelaListaMusica extends javax.swing.JInternalFrame {
                     .addComponent(jButton2)
                     .addComponent(jButton5)
                     .addComponent(jButton3))
-                .addGap(39, 39, 39)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel4))
-                    .addComponent(jButton4))
-                .addGap(15, 15, 15)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -441,7 +459,7 @@ public class TelaListaMusica extends javax.swing.JInternalFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(0, 245, Short.MAX_VALUE)
+                                .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(jInternalFrame2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(70, 70, 70))
                             .addGroup(jPanel4Layout.createSequentialGroup()
@@ -449,7 +467,7 @@ public class TelaListaMusica extends javax.swing.JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 61, Short.MAX_VALUE)
+                        .addGap(18, 18, Short.MAX_VALUE)
                         .addComponent(jButton7)))
                 .addContainerGap())
         );
@@ -467,7 +485,7 @@ public class TelaListaMusica extends javax.swing.JInternalFrame {
                                 .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel5)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -487,18 +505,38 @@ public class TelaListaMusica extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(42, 42, 42)
+                .addGap(48, 48, 48)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         setBounds(250, 20, 1126, 543);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        // TODO add your handling code here:
+        if (jTListaM.getSelectedRow() != -1) {
+            if (jTMusicas.getSelectedRow() != -1) {
+                int idListaMusica = this.objListaM.get(jTListaM.getSelectedRow()).getIdLista();
+                int idMusica = this.objMusica.get(jTMusicas.getSelectedRow()).getIdMusica();
+
+                ListaMusica listM = new ListaMusica();
+
+                listM.setLista_id(idListaMusica);
+                listM.setMusica_id(idMusica);
+
+                listM.getAdicionarMusicaNaLista();
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Selecione um música");
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecione um lista");
+        }
+
+
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
@@ -514,51 +552,41 @@ public class TelaListaMusica extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTMusicasKeyPressed
 
     private void jTMusicasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTMusicasMouseClicked
-        // TODO add your handling code here:
 
-        //        ObjetoRadio radio = this.objRadio.get(jTEventos.getSelectedRow()); // Pegar radio na posição da lista pelo o numero da linha da tabela
-
-        //        nomeLista.setText(radio.getNome());
-        //        telefoneRadio.setText(radio.getTelefone());
-        //        emailRadio.setText(radio.getEmail());
-        //        modulacaoRadio.setSelectedItem(radio.getModulacao());
-        //        frequenciaRadio.setText(String.valueOf(radio.getFrequencia()));
-        //        siteRadio.setText(radio.getSiteRadio());
-        //        cepRadio.setText(String.valueOf(radio.getCep()));
-        //        compCepRadio.setText(radio.getComplemento());
-        //        cnpjRadio.setText(radio.getCnpj());
-        //        senhaRadio.setText(radio.getSenha());
     }//GEN-LAST:event_jTMusicasMouseClicked
 
     private void jTListaMKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTListaMKeyPressed
-        // TODO add your handling code here:
+        ObjetoListaMusica listaM = this.objListaM.get(jTListaM.getSelectedRow());
+        nomeLista.setText(listaM.getNome());
     }//GEN-LAST:event_jTListaMKeyPressed
 
     private void jTListaMMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTListaMMouseClicked
-        // TODO add your handling code here:
+        ObjetoListaMusica listaM = this.objListaM.get(jTListaM.getSelectedRow());
+        nomeLista.setText(listaM.getNome());
+
     }//GEN-LAST:event_jTListaMMouseClicked
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         //        if (jTEventos.getSelectedRow() != -1) {
-            //
-            //            int check = JOptionPane.showConfirmDialog(null, "Confirma o desbloqueamento", "Desbloquear", JOptionPane.YES_NO_OPTION);
-            //
-            //            if (check == 0) {
-                ////                DefaultTableModel dtmEventos = (DefaultTableModel) jTEventos.getModel();
-                ////                dtmEventos.removeRow(jTEventos.getSelectedRow());
-                //
-                //                Radio radio = new Radio();
-                //
-                //                radio.setIdRadio(Integer.parseInt(jTEventos.getValueAt(jTEventos.getSelectedRow(), 0).toString()));
-                //
-                //                radio.getDesbloquearRadio();
-                //
-                //                readTable();
-                //            }
-            //
-            //        } else {
-            //            JOptionPane.showMessageDialog(null, "Selecione um rádio para desbloquear");
-            //        }
+        //
+        //            int check = JOptionPane.showConfirmDialog(null, "Confirma o desbloqueamento", "Desbloquear", JOptionPane.YES_NO_OPTION);
+        //
+        //            if (check == 0) {
+        ////                DefaultTableModel dtmEventos = (DefaultTableModel) jTEventos.getModel();
+        ////                dtmEventos.removeRow(jTEventos.getSelectedRow());
+        //
+        //                Radio radio = new Radio();
+        //
+        //                radio.setIdRadio(Integer.parseInt(jTEventos.getValueAt(jTEventos.getSelectedRow(), 0).toString()));
+        //
+        //                radio.getDesbloquearRadio();
+        //
+        //                readTable();
+        //            }
+        //
+        //        } else {
+        //            JOptionPane.showMessageDialog(null, "Selecione um rádio para desbloquear");
+        //        }
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -573,59 +601,68 @@ public class TelaListaMusica extends javax.swing.JInternalFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
 
-        //        if (jTEventos.getSelectedRow() != -1) {
-            //            if (validCampos()) {
-                //                int check = JOptionPane.showConfirmDialog(null, "Confirma a alteração", "Alteração", JOptionPane.YES_NO_OPTION);
-                //
-                //                if (check == 0) {
-                    //
-                    //                    Radio altearR = new Radio();
-                    //
-                    //                    //            replaceAll("[^0-9]", "") Deixar somente números
-                    //                    altearR.setNome(nomeLista.getText());
-                    //                    altearR.setTelefone(telefoneRadio.getText().replaceAll("[^0-9]", ""));
-                    //                    altearR.setEmail(emailRadio.getText());
-                    //                    altearR.setModulacao(modulacaoRadio.getSelectedItem().toString());
-                    //
-                    //                    // Transformar valor em formato número americano
-                    //                    String formatNumeroFre = frequenciaRadio.getText().replaceAll("\\.", "");
-                    //                    altearR.setFrequencia(Double.parseDouble(formatNumeroFre.replace(',', '.')));
-                    //
-                    //                    altearR.setSiteRadio(siteRadio.getText());
-                    //                    altearR.setCep(Integer.parseInt(cepRadio.getText().replaceAll("[^0-9]", "")));
-                    //                    altearR.setComplemento(compCepRadio.getText());
-                    //                    altearR.setCnpj(cnpjRadio.getText().replaceAll("[^0-9]", ""));
-                    //                    altearR.setEmail(emailRadio.getText());
-                    //                    altearR.setSenha(senhaRadio.getText());
-                    //
-                    //                    altearR.setIdRadio(Integer.parseInt(jTEventos.getValueAt(jTEventos.getSelectedRow(), 0).toString()));
-                    //
-                    //                    System.out.println(Integer.parseInt(jTEventos.getValueAt(jTEventos.getSelectedRow(), 0).toString()));
-                    //
-                    //                    altearR.getAlterarRadio();
-                    //
-                    //                    readTable();
-                    //                }
-                //
-                //            }
-            //
-            //        } else {
-            //            JOptionPane.showMessageDialog(null, "Selecione um rádio para alterar");
-            //        }
+        if (jTListaM.getSelectedRow() != -1) {
+            if (validCampos()) {
+                int check = JOptionPane.showConfirmDialog(null, "Confirma a alteração", "Alteração", JOptionPane.YES_NO_OPTION);
+
+                if (check == 0) {
+
+                    ObjetoListaMusica listaM = this.objListaM.get(jTListaM.getSelectedRow());
+
+                    if (!nomeLista.getText().equals(listaM.getNome())) {
+
+                        ListaMusica listaMA = new ListaMusica();
+                        listaMA.setLista_id(listaM.getIdLista());
+                        listaMA.setNome(nomeLista.getText());
+
+                        listaMA.getAlterarListaMusica();
+
+                        readTableLista();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Você não alterou o nome da lista");
+                    }
+
+                }
+
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecione uma lista para alterar");
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
-        if(validCampos()){
-            ListaMusica lmusica = new ListaMusica();
-            lmusica.setNome(nomeLista.getText());
-            lmusica.getAdicionarMusicaLista();
+        if (validCampos()) {
 
-            readTableLista();
+            if (!veficarNomeIguaisLista()) { // Se nomes forem iguais não alterar o nome
+                ListaMusica lmusica = new ListaMusica();
+                lmusica.setNome(nomeLista.getText());
+                lmusica.getAdicionarMusicaLista();
+
+                readTableLista();
+            } else {
+                JOptionPane.showMessageDialog(null, "Nome de lista já existe");
+            }
+
         }
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    public boolean veficarNomeIguaisLista() { // Se nomes forem iguais não alterar o nome
+
+        boolean check = false;
+
+        for (ObjetoListaMusica lm : this.objListaM) {
+
+            if (nomeLista.getText().equals(lm.getNome())) {
+                check = true;
+            }
+
+        }
+
+        return check;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
@@ -645,6 +682,7 @@ public class TelaListaMusica extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTListaM;

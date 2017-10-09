@@ -5,16 +5,14 @@
  */
 package view.locutor;
 
-import java.io.File;
 import java.util.List;
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-//import javax.swing.JOptionPane;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import model.ListaMusica;
+import model.MediaPlay;
 import model.Musica;
+import model.ObjetoListaMusica;
 import model.ObjetoMusica;
-
 
 /**
  *
@@ -22,56 +20,69 @@ import model.ObjetoMusica;
  */
 public class Play extends javax.swing.JInternalFrame {
 
+    private List<ObjetoListaMusica> objListaM;
     private List<ObjetoMusica> objMusica;
+    private final MediaPlay musicaPlay = new MediaPlay();
 
     /**
      * Creates new form TelaEvento1
      */
     public Play() {
         initComponents();
+        readTableLista();
     }
-    
+
     public void readTableLista() {
-        DefaultTableModel modelo = (DefaultTableModel) jTMusicas.getModel();
+        DefaultTableModel modelo = (DefaultTableModel) jTListaMusicas.getModel();
 
         modelo.setNumRows(0); // Limpando a tabela
 
-        Musica musica = new Musica();
+        ListaMusica listaM = new ListaMusica();
 
-        this.objMusica = musica.listarListasMusicas();
+        this.objListaM = listaM.listasListasMusicas();
 
-        for (ObjetoMusica m : this.objMusica) {        
-            
+        for (ObjetoListaMusica lm : this.objListaM) {
+
             modelo.addRow(new Object[]{
-                m.getIdMusica(),
-                m.getNome(),
-                m.getNomeCantor(),
-                m.getBanda(),
-                m.getEstiloMusical()
+                lm.getNome()
             });
 
         }
 
     }
-    
-    private void playMusica(String musica){
-        
-        JFXPanel j = new JFXPanel();
-        
-        String file = new File(musica).toURI().toString();
-        
-        new MediaPlayer(new Media(file)).play();
-    }
-    
-    private void stopMusica(String musica){
-        
-        JFXPanel j = new JFXPanel();
-        
-        String file = new File(musica).toURI().toString();
-        
-        new MediaPlayer(new Media(file)).stop();
+
+    public void readTableMusica() {
+        DefaultTableModel modelo = (DefaultTableModel) jTMusicas.getModel();
+
+        modelo.setNumRows(0); // Limpando a tabela
+
+        for (ObjetoMusica m : this.objMusica) {
+
+            modelo.addRow(new Object[]{
+                m.getNome(),
+                m.getNomeCantor(),});
+        }
+
     }
 
+    public void readTableMusicaForSearch(String search) {
+        DefaultTableModel modelo = (DefaultTableModel) jTListaMusicas.getModel();
+
+        modelo.setNumRows(0); // Limpando a tabela
+
+        ListaMusica listaM = new ListaMusica();
+
+        this.objListaM = listaM.consultarListaMusica(search);
+
+        for (ObjetoListaMusica lm : this.objListaM) {
+
+            modelo.addRow(new Object[]{
+                lm.getNome()
+            });
+
+        }
+
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -84,36 +95,102 @@ public class Play extends javax.swing.JInternalFrame {
 
         jLabel3 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
+        jButton7 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTMusicas = new javax.swing.JTable();
+        nomeLista = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jInternalFrame2 = new javax.swing.JInternalFrame();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTMusicas = new javax.swing.JTable();
+        jTListaMusicas = new javax.swing.JTable();
         jButton6 = new javax.swing.JButton();
-        jTextField2 = new javax.swing.JTextField();
+        searchListaM = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        MusicaPlay = new javax.swing.JButton();
+        beforeMusica = new javax.swing.JButton();
+        nextMusica = new javax.swing.JButton();
+        volume = new javax.swing.JButton();
+        nomeMusica = new javax.swing.JLabel();
+        jProgressBar1 = new javax.swing.JProgressBar();
+        downUpVolume = new javax.swing.JSlider();
 
         jLabel3.setText("jLabel3");
 
         jTextField3.setText("jTextField3");
 
+        jButton7.setText("jButton7");
+
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
-        setTitle("Admins");
+        setTitle("Play");
         setToolTipText("");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 282, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Músicas da Lista"));
+
+        jTMusicas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Nome", "Cantor"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTMusicas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTMusicasMouseClicked(evt);
+            }
+        });
+        jTMusicas.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTMusicasKeyPressed(evt);
+            }
+        });
+        jScrollPane4.setViewportView(jTMusicas);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(nomeLista, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(nomeLista, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Lista de Músicas"));
@@ -144,33 +221,33 @@ public class Play extends javax.swing.JInternalFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        jTMusicas.setModel(new javax.swing.table.DefaultTableModel(
+        jTListaMusicas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Nome", "Cantor", "Banda", "Estilo"
+                "Nome Lista"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jTMusicas.addMouseListener(new java.awt.event.MouseAdapter() {
+        jTListaMusicas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTMusicasMouseClicked(evt);
+                jTListaMusicasMouseClicked(evt);
             }
         });
-        jTMusicas.addKeyListener(new java.awt.event.KeyAdapter() {
+        jTListaMusicas.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                jTMusicasKeyPressed(evt);
+                jTListaMusicasKeyPressed(evt);
             }
         });
-        jScrollPane1.setViewportView(jTMusicas);
+        jScrollPane1.setViewportView(jTListaMusicas);
 
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/zoom.png"))); // NOI18N
         jButton6.addActionListener(new java.awt.event.ActionListener() {
@@ -179,9 +256,9 @@ public class Play extends javax.swing.JInternalFrame {
             }
         });
 
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        searchListaM.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                searchListaMActionPerformed(evt);
             }
         });
 
@@ -194,15 +271,17 @@ public class Play extends javax.swing.JInternalFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 505, Short.MAX_VALUE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(searchListaM, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jInternalFrame2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                        .addComponent(jInternalFrame2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -214,28 +293,82 @@ public class Play extends javax.swing.JInternalFrame {
                         .addComponent(jInternalFrame2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(searchListaM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5))))
                 .addGap(13, 13, 13)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Play"));
+
+        MusicaPlay.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/play.png"))); // NOI18N
+        MusicaPlay.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MusicaPlayActionPerformed(evt);
+            }
+        });
+
+        beforeMusica.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/before.png"))); // NOI18N
+
+        nextMusica.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/next.png"))); // NOI18N
+
+        volume.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Vol.png"))); // NOI18N
+
+        nomeMusica.setText("Musica");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(nomeMusica, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(volume)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(downUpVolume, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(15, 15, 15)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addComponent(beforeMusica, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(34, 34, 34)
+                                        .addComponent(MusicaPlay, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(34, 34, 34)
+                                        .addComponent(nextMusica, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(nomeMusica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(24, 24, 24)
+                                .addComponent(beforeMusica, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(MusicaPlay)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(nextMusica, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(volume, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(downUpVolume, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -243,61 +376,122 @@ public class Play extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap()
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(678, 678, 678)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(28, 28, 28))
         );
 
-        setBounds(250, 20, 852, 464);
+        setBounds(250, 20, 792, 559);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTMusicasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTMusicasMouseClicked
+    private void jTListaMusicasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTListaMusicasMouseClicked
+
+        ObjetoListaMusica listaM = this.objListaM.get(jTListaMusicas.getSelectedRow());
+
+        Musica musicasLista = new Musica();
+
+        List<ObjetoMusica> musicas = musicasLista.buscarMusicasLista(listaM.getIdLista()); // Buscar Músicas da lista pelo id Lista
+
+        if (!musicas.isEmpty()) { // Se retorno de músicas não for vazio, limpar ArrayList e atribuir as novas músicas
+
+            if (this.objMusica != null) { // Array list objMusica não for vazio 
+                this.objMusica.clear(); // Limpar Array para novas musicas  
+            }
+
+            nomeLista.setText(listaM.getNome()); // Exibir Nome lista
+            this.objMusica = musicas;
+
+            readTableMusica(); // Atualizar tabela músicas
+
+        } else { // Se não, não limpar o array list e continuar com a mesma lista
+            JOptionPane.showMessageDialog(null, "Lista sem músicas");
+        }
+
+    }//GEN-LAST:event_jTListaMusicasMouseClicked
+
+    private void jTListaMusicasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTListaMusicasKeyPressed
         // TODO add your handling code here:
 
-        //        ObjetoRadio radio = this.objRadio.get(jTEventos.getSelectedRow()); // Pegar radio na posição da lista pelo o numero da linha da tabela
 
-        //        nomeLista.setText(radio.getNome());
-        //        telefoneRadio.setText(radio.getTelefone());
-        //        emailRadio.setText(radio.getEmail());
-        //        modulacaoRadio.setSelectedItem(radio.getModulacao());
-        //        frequenciaRadio.setText(String.valueOf(radio.getFrequencia()));
-        //        siteRadio.setText(radio.getSiteRadio());
-        //        cepRadio.setText(String.valueOf(radio.getCep()));
-        //        compCepRadio.setText(radio.getComplemento());
-        //        cnpjRadio.setText(radio.getCnpj());
-        //        senhaRadio.setText(radio.getSenha());
+    }//GEN-LAST:event_jTListaMusicasKeyPressed
+
+    private void searchListaMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchListaMActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchListaMActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        readTableMusicaForSearch(searchListaM.getText());
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jTMusicasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTMusicasMouseClicked
+        ObjetoMusica musica = this.objMusica.get(jTMusicas.getSelectedRow()); // Música do Play
+        MediaPlay.setMusica(musica);
+        nomeMusica.setText(MediaPlay.getMusica().getNome());
     }//GEN-LAST:event_jTMusicasMouseClicked
 
     private void jTMusicasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTMusicasKeyPressed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTMusicasKeyPressed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    private void MusicaPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MusicaPlayActionPerformed
+        // Executar play somente se existir música
+        if (MediaPlay.getMusica() != null) {
+            if (MediaPlay.playUse()) {
+                MediaPlay.pauseMusica();
+            } else {
+                MediaPlay.playMusica();
+            }
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton6ActionPerformed
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecione uma música para tocar");
+        }
+
+    }//GEN-LAST:event_MusicaPlayActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton MusicaPlay;
+    private javax.swing.JButton beforeMusica;
+    private javax.swing.JSlider downUpVolume;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JInternalFrame jInternalFrame2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JTable jTListaMusicas;
     private javax.swing.JTable jTMusicas;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
+    private javax.swing.JButton nextMusica;
+    private javax.swing.JLabel nomeLista;
+    private javax.swing.JLabel nomeMusica;
+    private javax.swing.JTextField searchListaM;
+    private javax.swing.JButton volume;
     // End of variables declaration//GEN-END:variables
 }

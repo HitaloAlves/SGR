@@ -13,6 +13,7 @@ public class ObjetoMusica {
     private String nomeCantor;
     private String banda;
     private String album;
+    private String nomeFileMusica;
 
     public int getIdMusica() {
         return idMusica;
@@ -61,8 +62,14 @@ public class ObjetoMusica {
     public void setAlbum(String album) {
         this.album = album;
     }
-    
-    
+
+    public String getNomeFileMusica() {
+        return nomeFileMusica;
+    }
+
+    public void setNomeFileMusica(String nomeFileMusica) {
+        this.nomeFileMusica = nomeFileMusica;
+    }    
     
     
         

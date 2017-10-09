@@ -5,6 +5,8 @@
  */
 package model;
 
+import java.util.List;
+
 /**
  *
  * @author leonardo
@@ -20,6 +22,10 @@ public final class Sessao {
     private static ObjetoLocutor dadosUser;
 
     private static ObjetoRadio dadosRadio;
+    
+    private static List<ObjetoEstiloMusical> dadosEstiloM;
+    
+    
 
     public static ObjetoLocutor getDadosUser() {
         return dadosUser;
@@ -52,8 +58,14 @@ public final class Sessao {
     public static void setIdRadio(int idRadio) {
         Sessao.idRadio = idRadio;
     }
-    
-    
+
+    public static List<ObjetoEstiloMusical> getDadosEstiloM() {
+        return dadosEstiloM;
+    }
+
+    public static void setDadosEstiloM(List<ObjetoEstiloMusical> dadosEstiloM) {
+        Sessao.dadosEstiloM = dadosEstiloM;
+    }
 
     public static String getNomeTableUser() {
         return nomeTableUser;        
@@ -72,6 +84,9 @@ public final class Sessao {
         } else {
             Locutor locutor = new Locutor();
             locutor.consultarLocutorSessao();
+            
+            Musica estiloM = new Musica();
+            estiloM.buscarEstilosMusicais();
         }
 
     }

@@ -77,7 +77,7 @@ public class Acesso {
                         }
                     } else { // Verificação para o Locutor
                         if (this.verficarBloqueio(rs.getInt("RB.Radio_id"), rs.getInt("L.Radio_id"))) {
-                            this.message = "Sua conta foi Bloqueada, entre em conta com SRG";
+                            this.message = "Sua conta foi Bloqueada, entre em conta com SGR";
                             this.acesso = false;
                         } else {
                             Sessao.setIdUser(rs.getInt("id")); // Sessao id

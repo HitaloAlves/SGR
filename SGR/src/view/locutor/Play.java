@@ -5,11 +5,12 @@
  */
 package view.locutor;
 
+import java.io.File;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.ListaMusica;
-import model.MediaPlay;
+import model.TocadorMusica;
 import model.Musica;
 import model.ObjetoListaMusica;
 import model.ObjetoMusica;
@@ -22,7 +23,7 @@ public class Play extends javax.swing.JInternalFrame {
 
     private List<ObjetoListaMusica> objListaM;
     private List<ObjetoMusica> objMusica;
-    private final MediaPlay musicaPlay = new MediaPlay();
+    private final TocadorMusica musicaPlay = new TocadorMusica();
 
     /**
      * Creates new form TelaEvento1
@@ -117,6 +118,7 @@ public class Play extends javax.swing.JInternalFrame {
         nomeMusica = new javax.swing.JLabel();
         jProgressBar1 = new javax.swing.JProgressBar();
         downUpVolume = new javax.swing.JSlider();
+        MusicaPlay1 = new javax.swing.JButton();
 
         jLabel3.setText("jLabel3");
 
@@ -303,6 +305,7 @@ public class Play extends javax.swing.JInternalFrame {
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Play"));
 
         MusicaPlay.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/play.png"))); // NOI18N
+        MusicaPlay.setText(" ");
         MusicaPlay.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MusicaPlayActionPerformed(evt);
@@ -316,6 +319,13 @@ public class Play extends javax.swing.JInternalFrame {
         volume.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Vol.png"))); // NOI18N
 
         nomeMusica.setText("Musica");
+
+        MusicaPlay1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pause.png"))); // NOI18N
+        MusicaPlay1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MusicaPlay1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -335,13 +345,15 @@ public class Play extends javax.swing.JInternalFrame {
                                 .addComponent(downUpVolume, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGap(15, 15, 15)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addGroup(jPanel3Layout.createSequentialGroup()
                                         .addComponent(beforeMusica, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(34, 34, 34)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(MusicaPlay, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(34, 34, 34)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(MusicaPlay1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(nextMusica, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -350,20 +362,21 @@ public class Play extends javax.swing.JInternalFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(nomeMusica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(24, 24, 24)
-                                .addComponent(beforeMusica, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(MusicaPlay)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(nextMusica, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(nextMusica, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addGap(24, 24, 24)
+                            .addComponent(beforeMusica, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(MusicaPlay1)
+                                .addComponent(MusicaPlay)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(volume, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -444,8 +457,17 @@ public class Play extends javax.swing.JInternalFrame {
 
     private void jTMusicasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTMusicasMouseClicked
         ObjetoMusica musica = this.objMusica.get(jTMusicas.getSelectedRow()); // Música do Play
-        MediaPlay.setMusica(musica);
-        nomeMusica.setText(MediaPlay.getMusica().getNome());
+
+        File file = new File("musicas/" + musica.getNomeFileMusica());
+
+        if (file.exists()) {
+            TocadorMusica.setMusica(musica);
+            nomeMusica.setText(TocadorMusica.getMusica().getNome());
+        } else {
+            JOptionPane.showMessageDialog(null, "File Música: "+musica.getNome()+" não encontrada");
+        }
+
+
     }//GEN-LAST:event_jTMusicasMouseClicked
 
     private void jTMusicasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTMusicasKeyPressed
@@ -454,12 +476,9 @@ public class Play extends javax.swing.JInternalFrame {
 
     private void MusicaPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MusicaPlayActionPerformed
         // Executar play somente se existir música
-        if (MediaPlay.getMusica() != null) {
-            if (MediaPlay.playUse()) {
-                MediaPlay.pauseMusica();
-            } else {
-                MediaPlay.playMusica();
-            }
+        if (TocadorMusica.getMusica() != null) {
+
+                TocadorMusica.playMusica();            
 
         } else {
             JOptionPane.showMessageDialog(null, "Selecione uma música para tocar");
@@ -467,9 +486,22 @@ public class Play extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_MusicaPlayActionPerformed
 
+    private void MusicaPlay1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MusicaPlay1ActionPerformed
+        // TODO add your handling code here:
+        if (TocadorMusica.getMusica() != null) {
+
+            TocadorMusica.pauseMusica();
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecione uma música para tocar");
+        }
+
+    }//GEN-LAST:event_MusicaPlay1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton MusicaPlay;
+    private javax.swing.JButton MusicaPlay1;
     private javax.swing.JButton beforeMusica;
     private javax.swing.JSlider downUpVolume;
     private javax.swing.JButton jButton6;

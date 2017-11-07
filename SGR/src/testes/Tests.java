@@ -6,7 +6,9 @@
 package testes;
 
 import java.io.File;
-import javafx.scene.media.AudioClip;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 /**
  *
@@ -20,8 +22,21 @@ public class Tests {
      */
     public static void main(String[] args) {       
             
-                
+            estanciaAudioClip();    
       
+    }
+    
+    private static void estanciaAudioClip() {
+        String file = new File("musicas/Iron_Maiden_Afraid_to_Shoot_Strangers.mp3").toURI().toString();
+        
+        new JFXPanel();
+        
+        Media hit = new Media(file);
+        
+        MediaPlayer  media = new MediaPlayer(hit);
+        
+        media.play();
+        
     }
     
     

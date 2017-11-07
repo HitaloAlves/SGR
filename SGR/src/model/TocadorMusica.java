@@ -6,30 +6,38 @@
 package model;
 
 import java.io.File;
-import javafx.scene.media.AudioClip;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 /**
  *
  * @author leonardo
  */
-public final class MediaPlay {
+public final class TocadorMusica {
 
     private static ObjetoMusica musica;
 
-    private static AudioClip clip;
+    private static MediaPlayer audioMusica;
 
     private static String AUDIO_URL;
 
     private static boolean playUse; // Play em uso 
+    
+    private static long clipTime;
 
     public static void playMusica() {
-        clip.play(); // 2
-        MediaPlay.playUse = true;
+        TocadorMusica.audioMusica.play(); // 2
+        TocadorMusica.playUse = true;
     }
 
     public static void pauseMusica() {
-        clip.stop();
-        MediaPlay.playUse = false;
+        TocadorMusica.audioMusica.pause();
+    }
+    
+    public static void stopMusica(){
+        audioMusica.stop();
+        TocadorMusica.playUse = false;
     }
 
     public static void nextMusica() {
@@ -41,32 +49,37 @@ public final class MediaPlay {
     }
 
     public static void volumeMusica(double volume) {
-        clip.setVolume(volume);
+        TocadorMusica.audioMusica.setVolume(volume);
     }
 
     public static void repetirMusica() {
-
+        TocadorMusica.audioMusica.getOnRepeat();
     }
 
     public static ObjetoMusica getMusica() {
-        return musica;
+        return TocadorMusica.musica; // Retornando Objeto 
     }
 
     public static void setMusica(ObjetoMusica musica) {
-        MediaPlay.musica = musica;
+        TocadorMusica.musica = musica;
 
-        File file = new File("musicas/" + MediaPlay.musica.getNomeFileMusica());
+        File file = new File("musicas/" + TocadorMusica.musica.getNomeFileMusica());
 
-        MediaPlay.AUDIO_URL = file.toURI().toString(); // AudioClip precisa de uma URL ou File:// ou Htpp
-        MediaPlay.estanciaAudioClip();
+        TocadorMusica.AUDIO_URL = file.toURI().toString(); // AudioClip precisa de uma URL ou File:// ou Htpp
+        TocadorMusica.estanciaAudioClip();
     }
 
     private static void estanciaAudioClip() {
-        MediaPlay.clip = new AudioClip(AUDIO_URL);
+        
+        JFXPanel fxPanel = new JFXPanel();
+               
+        Media hit = new Media(TocadorMusica.AUDIO_URL);
+        
+        TocadorMusica.audioMusica = new MediaPlayer(hit);
     }
 
     public static boolean playUse() {
-        return MediaPlay.playUse;
+        return TocadorMusica.playUse;
     }
 
 }

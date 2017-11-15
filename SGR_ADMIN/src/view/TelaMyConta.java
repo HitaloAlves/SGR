@@ -5,9 +5,9 @@
  */
 package view;
 
+import controller.AdminController;
 import javax.swing.JOptionPane;
-import model.Admin;
-import model.Sessao;
+import sessao.Sessao;
 
 /**
  *
@@ -306,19 +306,22 @@ public class TelaMyConta extends javax.swing.JInternalFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        
+        AdminController adminC = new AdminController();
+        adminC.setSenha(senhaAdmin.getText());
+        
+        adminC.verifInput();
 
-        if (!senhaAdmin.getText().equals("")) {
-
-            if (!senhaAdmin.getText().equals(Sessao.getTadosUser().getSenha())) {
-                Admin admin = new Admin();
-                admin.setSenha(senhaAdmin.getText());
-                admin.getAlterarSenhaUserAdmin();
-            } else {
-                JOptionPane.showMessageDialog(null, "Senha não foi alterada");
+        if (adminC.isValid()) {
+            
+            adminC.alterarSenha();
+            
+            if (!adminC.isValid()) {
+                JOptionPane.showMessageDialog(null, adminC.getRetornoMsg());
             }
 
         } else {
-            JOptionPane.showMessageDialog(null, "Digite sua senha");
+            JOptionPane.showMessageDialog(null, adminC.getRetornoMsg());
         }
 
     }//GEN-LAST:event_jButton1ActionPerformed

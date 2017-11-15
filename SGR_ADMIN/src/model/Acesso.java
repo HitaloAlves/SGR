@@ -5,6 +5,7 @@
  */
 package model;
 
+import sessao.Sessao;
 import connection.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

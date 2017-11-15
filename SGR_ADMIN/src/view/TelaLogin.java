@@ -5,10 +5,8 @@
  */
 package view;
 
+import controller.AcessoController;
 import java.awt.event.KeyEvent;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import model.Acesso;
 
 /**
  *
@@ -24,49 +22,32 @@ public class TelaLogin extends javax.swing.JFrame {
     }
 
     private void login() {
+        
+        AcessoController acessoC = new AcessoController();
+        
+        acessoC.setEmail(textEmail.getText());
+        acessoC.setSenha(textSenha.getText());
+        
+        acessoC.validCampos();
 
-        if (validCampos()) {
-            Acesso login = new Acesso(textEmail.getText(), textSenha.getText());            
-
-            if (login.getAcesso()) {
+        if (acessoC.isValid()) {
+            // Efetuar Login
+            acessoC.fazerLogin();
+            
+            if(acessoC.isValid()){
+                // Abrir tela Inicial
                 TelaPrincipal telaPrinc = new TelaPrincipal();
                 telaPrinc.setVisible(true);
-                this.dispose();
+                this.dispose();                
             } else {
-                showMessage(login.getMessage());
+               showMessage(acessoC.getRetornoMsg());
             }
+        } else {
+           showMessage(acessoC.getRetornoMsg());
         }
 
     }
-
-    private boolean validCampos() {
-        boolean check = true;
-
-        if (textEmail.getText().equals("")) {
-            showMessage("Insira seu email de acesso");
-            check = false;
-        } else if (!isEmailValid(textEmail.getText())) {
-            showMessage("Email inválido");
-            check = false;
-        } else if (textSenha.getText().equals("")) {
-            showMessage("Insira sua senha de acesso");
-            check = false;
-        }
-
-        return check;
-    }
-
-    private static boolean isEmailValid(String email) {
-        if ((email == null) || (email.trim().length() == 0)) {
-            return false;
-        }
-
-        String emailPattern = "\\b(^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@([A-Za-z0-9-])+(\\.[A-Za-z0-9-]+)*((\\.[A-Za-z0-9]{2,})|(\\.[A-Za-z0-9]{2,}\\.[A-Za-z0-9]{2,}))$)\\b";
-        Pattern pattern = Pattern.compile(emailPattern, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
-    }
-
+    
     private void showMessage(String message) {
         jLMessage.setText(message);
     }

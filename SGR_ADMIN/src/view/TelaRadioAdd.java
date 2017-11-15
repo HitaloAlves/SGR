@@ -5,7 +5,7 @@
  */
 package view;
 
-import model.Radio;
+import controller.RadioController;
 
 import javax.swing.JOptionPane;
 
@@ -20,36 +20,7 @@ public class TelaRadioAdd extends javax.swing.JInternalFrame {
      */
     public TelaRadioAdd() {
         initComponents();
-    }
-
-    public boolean validCampos() {
-        boolean check = true;
-
-        if (nomeRadio.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Preencha o campo Nome");
-            check = false;
-        } else if (telefoneRadio.getText().equals("(  )      -      ")) {
-            JOptionPane.showMessageDialog(null, "Preencha o campo Tefenone");
-            check = false;
-        } else if (cnpjRadio.getText().equals("  .   .   /    -  ")) {
-            JOptionPane.showMessageDialog(null, "Preencha o campo CNPJ");
-            check = false;
-        } else if (cepRadio.getText().equals("  .   -   ")) {
-            JOptionPane.showMessageDialog(null, "Preencha o campo CEP");
-            check = false;
-        } else if (frequenciaRadio.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Preencha o campo Frequência");
-            check = false;
-        } else if (emailRadio.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Preencha o campo E-mail");
-            check = false;
-        } else if (senhaRadio.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Preencha o campo Senha");
-            check = false;
-        }
-
-        return check;
-    }
+    }    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -388,29 +359,26 @@ public class TelaRadioAdd extends javax.swing.JInternalFrame {
 
     private void criarRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_criarRadioActionPerformed
         // TODO add your handling code here:
+        
+        RadioController radioC = new RadioController();       
 
-        if (validCampos()) {
-            Radio criarR = new Radio();
+            radioC.setNome(nomeRadio.getText());
+            radioC.setTelefone(telefoneRadio.getText());
+            radioC.setEmail(emailRadio.getText());    
+            radioC.setModulacao(modulacaoRadio.getSelectedItem().toString());
             
-//            replaceAll("[^0-9]", "") Deixar somente números
+            radioC.setFrequencia(frequenciaRadio.getText());
+            
+            radioC.setSiteRadio(siteRadio.getText());
+            radioC.setCep(cepRadio.getText());
+            radioC.setComplemento(compCepRadio.getText());
+            radioC.setCnpj(cnpjRadio.getText());
+            radioC.setEmail(emailRadio.getText());
+            radioC.setSenha(senhaRadio.getText());
+            
+            radioC.cadastrarRadio();
 
-            criarR.setNome(nomeRadio.getText());
-            criarR.setTelefone(telefoneRadio.getText().replaceAll("[^0-9]", ""));
-            criarR.setEmail(emailRadio.getText());    
-            criarR.setModulacao(modulacaoRadio.getSelectedItem().toString());
-            
-            // Transformar valor em formato número americano
-            String formatNumeroFre = frequenciaRadio.getText().replaceAll("\\.", "");
-            criarR.setFrequencia(Double.parseDouble(formatNumeroFre.replace(',', '.')));
-            
-            criarR.setSiteRadio(siteRadio.getText());
-            criarR.setCep(Integer.parseInt(cepRadio.getText().replaceAll("[^0-9]", "")));
-            criarR.setComplemento(compCepRadio.getText());
-            criarR.setCnpj(cnpjRadio.getText().replaceAll("[^0-9]", ""));
-            criarR.setEmail(emailRadio.getText());
-            criarR.setSenha(senhaRadio.getText());
-
-            if (criarR.getCriarRadio()) {
+            if (radioC.isValid()) {
                 nomeRadio.setText(null);
                 telefoneRadio.setText(null);
                 emailRadio.setText(null);
@@ -422,8 +390,9 @@ public class TelaRadioAdd extends javax.swing.JInternalFrame {
                 cnpjRadio.setText(null);
                 emailRadio.setText(null);
                 senhaRadio.setText(null);
+            } else {
+                JOptionPane.showMessageDialog(null, radioC.getRetornoMsg());
             }
-        }
     }//GEN-LAST:event_criarRadioActionPerformed
 
     private void cepRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cepRadioActionPerformed

@@ -1,5 +1,5 @@
 
-package projectloop;
+package srg_admin;
 
 //import model.Acesso;
 
@@ -13,7 +13,7 @@ import view.TelaLogin;
  *
  * @author leonardo
  */
-public class ProjectLOOP {
+public class Main {
 
     /**
      * @param args the command line arguments

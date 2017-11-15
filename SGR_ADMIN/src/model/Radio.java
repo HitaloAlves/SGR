@@ -27,10 +27,6 @@ public class Radio {
     private String complemento;
     private String cnpj;
 
-    public void consultarRadio() {
-
-    }
-
     public List<ObjetoRadio> listasRadios() {
 
         Connection con = ConnectionFactory.getConnection();
@@ -149,9 +145,8 @@ public class Radio {
             stmt.setString(10, senha);
             stmt.setInt(11, idRadio);
 
-            int rowsUpdated = stmt.executeUpdate();;
+            int rowsUpdated = stmt.executeUpdate();
             if (rowsUpdated > 0) {
-                
                 JOptionPane.showMessageDialog(null, "Alteração Realizada com Sucesso");
             }
 
@@ -208,28 +203,62 @@ public class Radio {
         return criarRadio();
     }
 
-    private void bloquearRadio() {
+    private void bloquearRadio() {        
+        
+        if(!this.verifRadioBlock()){
+            Connection con = ConnectionFactory.getConnection();
+            PreparedStatement stmt = null;
+            
+            try {
+                stmt = con.prepareStatement("INSERT INTO RadiosBloqueados(Radio_id) VALUES(?)");
+                stmt.setInt(1, this.idRadio);
 
+                int rowsUpdated = stmt.executeUpdate();
+                if (rowsUpdated > 0) {
+                    JOptionPane.showMessageDialog(null, "Rádio bloqueado com Sucesso");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Não foi possível bloquear Rádio");
+                }
+
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Erro ao Bloquear Rádio" + ex);
+            } finally {
+                ConnectionFactory.closeConnection(con, stmt);
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Rádio já Bloqueda");
+        }
+        
+
+    }
+    
+    private boolean verifRadioBlock(){
+         boolean check = false;
+         
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null;
 
+        ResultSet rs = null;
+
+
         try {
-            stmt = con.prepareStatement("INSERT INTO RadiosBloqueados(Radio_id) VALUES(?)");
+            stmt = con.prepareStatement("SELECT * FROM RadiosBloqueados WHERE Radio_id=?");
             stmt.setInt(1, this.idRadio);
 
-            int rowsUpdated = stmt.executeUpdate();
-            if (rowsUpdated > 0) {
-                JOptionPane.showMessageDialog(null, "Rádio bloqueado com Sucesso");
-            } else {
-                JOptionPane.showMessageDialog(null, "Não foi possível bloquear Rádio");
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                check = true;
             }
 
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao Bloquear Rádio" + ex);
+            JOptionPane.showMessageDialog(null, "Erro ao Buscar" + ex);
         } finally {
-            ConnectionFactory.closeConnection(con, stmt);
+            ConnectionFactory.closeConnection(con, stmt, rs);
         }
-
+         
+         return check;
     }
    
     public void getBloquearRadio() {
@@ -237,26 +266,32 @@ public class Radio {
     }
     
     private void desbloquearRadio() {
-        Connection con = ConnectionFactory.getConnection();
-        PreparedStatement stmt = null;
+        
+        if(this.verifRadioBlock()){
+            Connection con = ConnectionFactory.getConnection();
+            PreparedStatement stmt = null;
 
-        try {
-            stmt = con.prepareStatement("DELETE FROM RadiosBloqueados WHERE Radio_id = ?");
-            stmt.setInt(1, this.idRadio);
+            try {
+                stmt = con.prepareStatement("DELETE FROM RadiosBloqueados WHERE Radio_id = ?");
+                stmt.setInt(1, this.idRadio);
 
-            int rowsUpdated = stmt.executeUpdate();
-            
-            if (rowsUpdated > 0) {
-                JOptionPane.showMessageDialog(null, "Rádio desbloqueado com Sucesso");
-            } else {
-                JOptionPane.showMessageDialog(null, "Não foi possível desbloquear Rádio");
-            }
+                int rowsUpdated = stmt.executeUpdate();
 
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro Desbloqquear Rádio" + ex);
-        } finally {
-            ConnectionFactory.closeConnection(con, stmt);
-        }
+                if (rowsUpdated > 0) {
+                    JOptionPane.showMessageDialog(null, "Rádio desbloqueado com Sucesso");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Não foi possível desbloquear Rádio");
+                }
+
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Erro Desbloqquear Rádio" + ex);
+            } finally {
+                ConnectionFactory.closeConnection(con, stmt);
+            }            
+        } else {
+            JOptionPane.showMessageDialog(null, "Rádio não está Bloqueda");
+        }       
+        
     }
     
     public void getDesbloquearRadio() {

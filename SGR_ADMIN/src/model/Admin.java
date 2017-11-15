@@ -5,6 +5,7 @@
  */
 package model;
 
+import sessao.Sessao;
 import connection.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,9 +22,9 @@ import javax.swing.JOptionPane;
 public class Admin extends Pessoa {  
     
     
-    public void criarAdmin(){
+    public Admin(){
         
-    }
+    }    
     
     public void consultarAdminSessao(){
         

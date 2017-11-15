@@ -5,10 +5,10 @@
  */
 package view;
 
+import controller.RadioController;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import model.Radio;
 import model.ObjetoRadio;
 
 /**
@@ -27,73 +27,31 @@ public class TelaRadio extends javax.swing.JInternalFrame {
         readTable();
     }
 
-    public boolean validCampos() {
-        boolean check = true;
-
-        if (nomeRadio.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Preencha o campo Nome");
-            check = false;
-        } else if (telefoneRadio.getText().equals("(  )      -      ")) {
-            JOptionPane.showMessageDialog(null, "Preencha o campo Tefenone");
-            check = false;
-        } else if (cnpjRadio.getText().equals("  .   .   /    -  ")) {
-            JOptionPane.showMessageDialog(null, "Preencha o campo CNPJ");
-            check = false;
-        } else if (cepRadio.getText().equals("  .   -   ")) {
-            JOptionPane.showMessageDialog(null, "Preencha o campo CEP");
-            check = false;
-        } else if (frequenciaRadio.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Preencha o campo Frequência");
-            check = false;
-        } else if (emailRadio.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Preencha o campo E-mail");
-            check = false;
-        } else if (senhaRadio.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Preencha o campo Senha");
-            check = false;
-        }
-
-        return check;
-    }
-
     public void readTable() {
-        DefaultTableModel modelo = (DefaultTableModel) jTEventos.getModel();
 
-        modelo.setNumRows(0); // Limpando a tabela
-
-        Radio radio = new Radio();
-
-        this.objRadio = radio.listasRadios();
-
-        for (ObjetoRadio rd : this.objRadio) {
-            
-            String status = rd.getRadioBloqueada() == true ? "Bloqueado" : "OK";
-
-            modelo.addRow(new Object[]{
-                rd.getId(),
-                rd.getNome(),
-                rd.getCnpj(),
-                status
-            });
-
-        }
-
+        RadioController radioC = new RadioController();
+        this.objRadio = radioC.listasRadios();
+        
+        this.construirTableRadio();
     }
 
     public void readTableForSearch(String search) {
-        DefaultTableModel modelo = (DefaultTableModel) jTEventos.getModel();
         
+        RadioController radioC = new RadioController();
+        this.objRadio = radioC.searchRadio(search);
+        
+        this.construirTableRadio();
+    }
+
+    private void construirTableRadio() {
+        DefaultTableModel modelo = (DefaultTableModel) jTEventos.getModel();
 
         modelo.setNumRows(0); // Limpando a tabela
 
-        Radio radio = new Radio();
-
-        this.objRadio = radio.searchRadio(search);
-
         for (ObjetoRadio rd : this.objRadio) { // Pesquisando no banco usando LIKE, Se existe algo no mesmo
-            
+
             String status = rd.getRadioBloqueada() == true ? "Bloqueado" : "OK";
-            
+
             modelo.addRow(new Object[]{ // Adicionando dados na tabela
                 rd.getId(),
                 rd.getNome(),
@@ -102,32 +60,7 @@ public class TelaRadio extends javax.swing.JInternalFrame {
             });
 
         }
-        
-
     }
-
-//    private JComponent CoresTable(DefaultTableModel defaulTableModel) {
-//        JTable jTable = new JTable(defaulTableModel) {
-//
-//            @Override
-//            public Component prepareRenderer(TableCellRenderer renderer, int row, int colunm ) {
-//                Component component = super.prepareRenderer(renderer, row, colunm);
-//                
-//                int linha = convertRowIndexToModel(row);
-//                
-//                String status = (String) getModel().getValueAt(linha, 3);
-//                
-//                if("Bloqueado".equals(status) ){
-//                    component.setBackground(Color.RED);
-//                }
-//                
-//                return component;
-//            }
-//        };
-//        
-//        return new JScrollPane(jTable);
-//        
-//    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -563,23 +496,27 @@ public class TelaRadio extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        // Bloquear Radio
 
         if (jTEventos.getSelectedRow() != -1) {
 
-            int check = JOptionPane.showConfirmDialog(null, "Confirma o bloqueamento", "Bloquear", JOptionPane.YES_NO_OPTION);
+            String verif = jTEventos.getValueAt(jTEventos.getSelectedRow(), 3).toString();
 
-            if (check == 0) {
-//                DefaultTableModel dtmEventos = (DefaultTableModel) jTEventos.getModel();
-//                dtmEventos.removeRow(jTEventos.getSelectedRow());
+            if (verif.equals("OK")) {
+                int check = JOptionPane.showConfirmDialog(null, "Confirma o bloqueamento", "Bloquear", JOptionPane.YES_NO_OPTION);
 
-                Radio radio = new Radio();
+                if (check == 0) {
 
-                radio.setIdRadio(Integer.parseInt(jTEventos.getValueAt(jTEventos.getSelectedRow(), 0).toString()));
+                    RadioController radioC = new RadioController();
 
-                radio.getBloquearRadio();
+                    radioC.setIdRadio(Integer.parseInt(jTEventos.getValueAt(jTEventos.getSelectedRow(), 0).toString()));
 
-                readTable();
+                    radioC.bloquearRadio();
+
+                    readTable();
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Rádio já está bloqueada");
             }
 
         } else {
@@ -590,7 +527,7 @@ public class TelaRadio extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTEventosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTEventosMouseClicked
-        // TODO add your handling code here:
+        // Preencher campos para alteração
 
         ObjetoRadio radio = this.objRadio.get(jTEventos.getSelectedRow()); // Pegar radio na posição da lista pelo o numero da linha da tabela
 
@@ -613,41 +550,38 @@ public class TelaRadio extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTEventosKeyPressed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-
+        // Alterar Radio
         if (jTEventos.getSelectedRow() != -1) {
-            if (validCampos()) {
+            RadioController radioC = new RadioController();
+
+            radioC.setNome(nomeRadio.getText());
+            radioC.setTelefone(telefoneRadio.getText());
+            radioC.setEmail(emailRadio.getText());
+            radioC.setModulacao(modulacaoRadio.getSelectedItem().toString());
+
+            radioC.setFrequencia(frequenciaRadio.getText());
+
+            radioC.setSiteRadio(siteRadio.getText());
+            radioC.setCep(cepRadio.getText());
+            radioC.setComplemento(compCepRadio.getText());
+            radioC.setCnpj(cnpjRadio.getText());
+            radioC.setEmail(emailRadio.getText());
+            radioC.setSenha(senhaRadio.getText());
+
+            radioC.validInput();
+
+            if (radioC.isValid()) {
                 int check = JOptionPane.showConfirmDialog(null, "Confirma a alteração", "Alteração", JOptionPane.YES_NO_OPTION);
 
                 if (check == 0) {
 
-                    Radio altearR = new Radio();
-
-                    //            replaceAll("[^0-9]", "") Deixar somente números
-                    altearR.setNome(nomeRadio.getText());
-                    altearR.setTelefone(telefoneRadio.getText().replaceAll("[^0-9]", ""));
-                    altearR.setEmail(emailRadio.getText());
-                    altearR.setModulacao(modulacaoRadio.getSelectedItem().toString());
-
-                    // Transformar valor em formato número americano
-                    String formatNumeroFre = frequenciaRadio.getText().replaceAll("\\.", "");
-                    altearR.setFrequencia(Double.parseDouble(formatNumeroFre.replace(',', '.')));
-
-                    altearR.setSiteRadio(siteRadio.getText());
-                    altearR.setCep(Integer.parseInt(cepRadio.getText().replaceAll("[^0-9]", "")));
-                    altearR.setComplemento(compCepRadio.getText());
-                    altearR.setCnpj(cnpjRadio.getText().replaceAll("[^0-9]", ""));
-                    altearR.setEmail(emailRadio.getText());
-                    altearR.setSenha(senhaRadio.getText());
-
-                    altearR.setIdRadio(Integer.parseInt(jTEventos.getValueAt(jTEventos.getSelectedRow(), 0).toString()));
-
-                    System.out.println(Integer.parseInt(jTEventos.getValueAt(jTEventos.getSelectedRow(), 0).toString()));
-
-                    altearR.getAlterarRadio();
-
+                    radioC.setIdRadio(Integer.parseInt(jTEventos.getValueAt(jTEventos.getSelectedRow(), 0).toString()));
+                    radioC.alterarRadio();
                     readTable();
                 }
 
+            } else {
+                JOptionPane.showMessageDialog(null, radioC.getRetornoMsg());
             }
 
         } else {
@@ -680,19 +614,23 @@ public class TelaRadio extends javax.swing.JInternalFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         if (jTEventos.getSelectedRow() != -1) {
 
-            int check = JOptionPane.showConfirmDialog(null, "Confirma o desbloqueamento", "Desbloquear", JOptionPane.YES_NO_OPTION);
+            String verif = jTEventos.getValueAt(jTEventos.getSelectedRow(), 3).toString();
 
-            if (check == 0) {
-//                DefaultTableModel dtmEventos = (DefaultTableModel) jTEventos.getModel();
-//                dtmEventos.removeRow(jTEventos.getSelectedRow());
+            if (verif.equals("Bloqueado")) {
+                int check = JOptionPane.showConfirmDialog(null, "Confirma o desbloqueamento", "Desbloquear", JOptionPane.YES_NO_OPTION);
 
-                Radio radio = new Radio();
+                if (check == 0) {
 
-                radio.setIdRadio(Integer.parseInt(jTEventos.getValueAt(jTEventos.getSelectedRow(), 0).toString()));
+                    RadioController radioC = new RadioController();
 
-                radio.getDesbloquearRadio();
+                    radioC.setIdRadio(Integer.parseInt(jTEventos.getValueAt(jTEventos.getSelectedRow(), 0).toString()));
 
-                readTable();
+                    radioC.desbloquearRadio();
+
+                    readTable();
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Rádio não está bloqueada");
             }
 
         } else {

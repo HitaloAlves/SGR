@@ -5,23 +5,19 @@
  */
 package view.locutor;
 
+import controller.MusicaController;
+import controller.PlayListaController;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.channels.FileChannel;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
-import model.Musica;
-import model.ObjetoEstiloMusical;
-import model.ObjetoMusica;
-import model.Sessao;
+import objetos.ObjetoEstiloMusical;
+import objetos.ObjetoListaMusica;
+import objetos.ObjetoMusica;
+import sessao.Sessao;
 
 /**
  *
@@ -30,10 +26,6 @@ import model.Sessao;
 public class TelaMusica extends javax.swing.JInternalFrame {
 
     private File fileMusica; // Musica a ser enviada
-
-    private File caminho; // Onde vai ser Salva
-
-    private String nomeFileMusica; // Nome da música ao salvar
     private List<ObjetoMusica> objMusica;
 
     /**
@@ -45,40 +37,14 @@ public class TelaMusica extends javax.swing.JInternalFrame {
         readTableMusica();
     }
 
-    public boolean validCampos() {
-        boolean check = true;
-
-        if (nomeFile.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Selecione uma música para adicionar");
-            check = false;
-        } else if (nomeMusica.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Preencha o campo Nome Música");
-            check = false;
-        } else if (nomeCantor.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Preencha o campo Cantor");
-            check = false;
-        } else if (nomeBanda.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Preencha o campo Banda");
-            check = false;
-        } else if (nomeAlbum.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Preencha o campo Álbum");
-            check = false;
-        } else if (estiloMusical.getSelectedItem().toString().equals("Selecione")) {
-            JOptionPane.showMessageDialog(null, "Selecione um estilo Muscical");
-            check = false;
-        }
-
-        return check;
-    }
-    
     public void readTableMusica() {
         DefaultTableModel modelo = (DefaultTableModel) jTMusicas.getModel();
 
         modelo.setNumRows(0); // Limpando a tabela
 
-        Musica musica = new Musica();
+        MusicaController musicaC = new MusicaController();
 
-        this.objMusica = musica.listarListasMusicas();
+        this.objMusica = musicaC.listarListasMusicas();
 
         for (ObjetoMusica m : this.objMusica) {
 
@@ -120,11 +86,10 @@ public class TelaMusica extends javax.swing.JInternalFrame {
         jInternalFrame2 = new javax.swing.JInternalFrame();
         jPanel4 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        buttonBuscarFile = new javax.swing.JButton();
         nomeFile = new javax.swing.JLabel();
-        criarRadio = new javax.swing.JButton();
-        criarRadio1 = new javax.swing.JButton();
-        criarRadio2 = new javax.swing.JButton();
+        buttonAddMusica = new javax.swing.JButton();
+        buttonAlterarMusica = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         jTMusicas = new javax.swing.JTable();
@@ -277,11 +242,11 @@ public class TelaMusica extends javax.swing.JInternalFrame {
         jLabel6.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
         jLabel6.setText("File Música:");
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/zoom.png"))); // NOI18N
-        jButton1.setText("Buscar ");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        buttonBuscarFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/zoom.png"))); // NOI18N
+        buttonBuscarFile.setText("Buscar ");
+        buttonBuscarFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                buttonBuscarFileActionPerformed(evt);
             }
         });
 
@@ -292,7 +257,7 @@ public class TelaMusica extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1)
+                    .addComponent(buttonBuscarFile)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -312,7 +277,7 @@ public class TelaMusica extends javax.swing.JInternalFrame {
                     .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(nomeFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addComponent(buttonBuscarFile)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
@@ -323,32 +288,23 @@ public class TelaMusica extends javax.swing.JInternalFrame {
 
         getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(31, 12, -1, -1));
 
-        criarRadio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
-        criarRadio.setText("Adicionar Música");
-        criarRadio.addActionListener(new java.awt.event.ActionListener() {
+        buttonAddMusica.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
+        buttonAddMusica.setText("Adicionar Música");
+        buttonAddMusica.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                criarRadioActionPerformed(evt);
+                buttonAddMusicaActionPerformed(evt);
             }
         });
-        getContentPane().add(criarRadio, new org.netbeans.lib.awtextra.AbsoluteConstraints(31, 354, -1, -1));
+        getContentPane().add(buttonAddMusica, new org.netbeans.lib.awtextra.AbsoluteConstraints(31, 354, -1, -1));
 
-        criarRadio1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pencil.png"))); // NOI18N
-        criarRadio1.setText("Alterar Música");
-        criarRadio1.addActionListener(new java.awt.event.ActionListener() {
+        buttonAlterarMusica.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pencil.png"))); // NOI18N
+        buttonAlterarMusica.setText("Alterar Música");
+        buttonAlterarMusica.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                criarRadio1ActionPerformed(evt);
+                buttonAlterarMusicaActionPerformed(evt);
             }
         });
-        getContentPane().add(criarRadio1, new org.netbeans.lib.awtextra.AbsoluteConstraints(234, 354, -1, -1));
-
-        criarRadio2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pencil_delete.png"))); // NOI18N
-        criarRadio2.setText("Excluir Música");
-        criarRadio2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                criarRadio2ActionPerformed(evt);
-            }
-        });
-        getContentPane().add(criarRadio2, new org.netbeans.lib.awtextra.AbsoluteConstraints(414, 354, -1, -1));
+        getContentPane().add(buttonAlterarMusica, new org.netbeans.lib.awtextra.AbsoluteConstraints(234, 354, -1, -1));
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Músicas"));
 
@@ -402,30 +358,48 @@ public class TelaMusica extends javax.swing.JInternalFrame {
         setBounds(250, 20, 964, 424);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void criarRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_criarRadioActionPerformed
+    private void buttonAddMusicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddMusicaActionPerformed
         // TODO add your handling code here:
 
-        if (validCampos()) {
+        MusicaController musicaC = new MusicaController();
 
-            if (enviarMusicaPasta()) { // Envia a música
+        musicaC.setNome(nomeMusica.getText());
+        musicaC.setBanda(nomeBanda.getText());
+        musicaC.setNomeCantor(nomeCantor.getText());
+        musicaC.setAlbum(nomeAlbum.getText());
+        musicaC.setEstiloMusical(estiloMusical.getSelectedItem().toString());
+        musicaC.setNomeFileMusica(nomeFile.getText());
 
-                cadMusica(); // cadastra a música no banco
+        musicaC.setFileMusica(this.fileMusica);
 
-                nomeMusica.setText(null);
-                nomeBanda.setText(null);
-                nomeCantor.setText(null);
-                nomeAlbum.setText(null);
+        musicaC.validInputs();
+
+        if (musicaC.isValid()) {
+
+            musicaC.enviarMusicaPasta();
+
+            if (musicaC.isValid()) { // Envia a música
+
+                musicaC.cadMusica(); // cadastra a música 
+                //Limpar Inputs
+                nomeMusica.setText("");
+                nomeBanda.setText("");
+                nomeCantor.setText("");
+                nomeAlbum.setText("");
                 estiloMusical.setSelectedItem("Selecione");
-                nomeFile.setText(null);
+                nomeFile.setText("");
+                readTableMusica();
 
             } else {
-                JOptionPane.showMessageDialog(null, "Não foi possível enviar música");
+                this.messageJOptionPane(musicaC.getRetornoMsg());
             }
+        } else {
+            this.messageJOptionPane(musicaC.getRetornoMsg());
         }
 
-    }//GEN-LAST:event_criarRadioActionPerformed
+    }//GEN-LAST:event_buttonAddMusicaActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void buttonBuscarFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBuscarFileActionPerformed
 
         JFileChooser filechooser = new JFileChooser();
         filechooser.setDialogTitle("Procurar Múscia");
@@ -441,30 +415,75 @@ public class TelaMusica extends javax.swing.JInternalFrame {
         int retorno = filechooser.showOpenDialog(this);
 
         if (retorno == JFileChooser.APPROVE_OPTION) {
-          
+
             if (filechooser.getSelectedFile().length() < tamnhoPermitido) {
-                fileMusica = filechooser.getSelectedFile();
-                nomeFile.setText(fileMusica.getName());
+                this.fileMusica = filechooser.getSelectedFile();
+                nomeFile.setText(fileMusica.getName()); // Show o nome do file 
             } else {
-                JOptionPane.showMessageDialog(null, "Arquivo muito grande, é permitido até 15 Megabyte");
+                this.messageJOptionPane("Arquivo muito grande, é permitido até 15 Megabyte");
             }
 
         }
 
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_buttonBuscarFileActionPerformed
 
-    private void criarRadio1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_criarRadio1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_criarRadio1ActionPerformed
+    private void buttonAlterarMusicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAlterarMusicaActionPerformed
+        if (jTMusicas.getSelectedRow() != -1) {
+            ObjetoMusica dadosMusica = this.objMusica.get(jTMusicas.getSelectedRow());
+            
+            MusicaController musicaC = new MusicaController();
 
-    private void criarRadio2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_criarRadio2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_criarRadio2ActionPerformed
+            musicaC.setNome(nomeMusica.getText());
+            musicaC.setBanda(nomeBanda.getText());
+            musicaC.setNomeCantor(nomeCantor.getText());
+            musicaC.setAlbum(nomeAlbum.getText());
+            musicaC.setEstiloMusical(estiloMusical.getSelectedItem().toString());
+            musicaC.setNomeFileMusica("file");
+            musicaC.setId_musica(dadosMusica.getIdMusica());
+
+            musicaC.validInputs();
+
+            if (musicaC.isValid()) {
+                if (verifAlteracaoMusica()) {
+                    int check = JOptionPane.showConfirmDialog(null, "Confirma a alteração", "Alteração", JOptionPane.YES_NO_OPTION);
+
+                    if (check == 0) {
+
+                        musicaC.alterarMusica();
+
+                        readTableMusica();
+
+                    }
+                } else {
+                    this.messageJOptionPane("Você não alterou dados da música");
+                }
+
+            } else {
+                this.messageJOptionPane(musicaC.getRetornoMsg());
+            }
+
+        } else {
+            this.messageJOptionPane("Selecione uma música para alterar");
+        }
+    }//GEN-LAST:event_buttonAlterarMusicaActionPerformed
+
+    private boolean verifAlteracaoMusica() {
+        boolean check = true;
+
+        ObjetoMusica dadosMusica = this.objMusica.get(jTMusicas.getSelectedRow());
+        
+
+        if (nomeMusica.getText().equals(dadosMusica.getNome()) && nomeCantor.getText().equals(dadosMusica.getNomeCantor()) && nomeBanda.getText().equals(dadosMusica.getBanda()) && nomeAlbum.getText().equals(dadosMusica.getAlbum()) && estiloMusical.getSelectedItem().toString().equals(dadosMusica.getEstiloMusical())) {
+            check = false;
+        } 
+
+        return check;
+    }
 
     private void jTMusicasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTMusicasMouseClicked
         ObjetoMusica musica = this.objMusica.get(jTMusicas.getSelectedRow()); // Música do Play
-        
+
         nomeMusica.setText(musica.getNome());
         nomeBanda.setText(musica.getBanda());
         nomeCantor.setText(musica.getNomeCantor());
@@ -482,92 +501,16 @@ public class TelaMusica extends javax.swing.JInternalFrame {
         }
     }
 
-    private void cadMusica() {
-
-        Musica music = new Musica();
-
-        music.setNome(nomeMusica.getText());
-        music.setBanda(nomeBanda.getText());
-        music.setNomeCantor(nomeCantor.getText());
-        music.setAlbum(nomeAlbum.getText());
-        music.setEstiloMusical(estiloMusical.getSelectedItem().toString());
-        music.setNomeFileMusica(nomeFileMusica);
-
-        music.cadastrarMusica();
-
-    }
-
-    private boolean enviarMusicaPasta() {
-
-        boolean check = false;
-
-        nomeFileMusica = converte(nomeMusica.getText()) + "_" + converte(nomeCantor.getText()) + ".mp3";
-
-        caminho = new File("musicas/" + nomeFileMusica); // Caminho para a música
-
-        try {
-            copyFile(new File(fileMusica.getPath()), caminho);
-
-            check = true;
-
-        } catch (IOException ex) {
-            Logger.getLogger(TelaMusica.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return check;
-
-    }
-    
-    public String converte(String text) {
-        return text.replaceAll("[ãâàáä]", "a")
-                .replaceAll("[êèéë]", "e")
-                .replaceAll("[îìíï]", "i")
-                .replaceAll("[õôòóö]", "o")
-                .replaceAll("[ûúùü]", "u")
-                .replaceAll("[ÃÂÀÁÄ]", "A")
-                .replaceAll("[ÊÈÉË]", "E")
-                .replaceAll("[ÎÌÍÏ]", "I")
-                .replaceAll("[ÕÔÒÓÖ]", "O")
-                .replaceAll("[ÛÙÚÜ]", "U")
-                .replace('ç', 'c')
-                .replace('Ç', 'C')
-                .replace('ñ', 'n')
-                .replace('Ñ', 'N')
-                .replace(' ', '_')
-                .replaceAll("!", "_")
-                .replaceAll("\\[\\´\\`\\?!\\@\\#\\$\\%\\¨\\*", "_")
-                .replaceAll("\\(\\)\\=\\{\\}\\[\\]\\~\\^\\]", "_")
-                .replaceAll("[\\.\\;\\-\\_\\+\\'\\ª\\º\\:\\;\\/]", "_");
-    }
-
-    public static void copyFile(File source, File destination) throws IOException {
-        if (destination.exists()) {
-            destination.delete();
-        }
-        FileChannel sourceChannel = null;
-        FileChannel destinationChannel = null;
-        try {
-            sourceChannel = new FileInputStream(source).getChannel();
-            destinationChannel = new FileOutputStream(destination).getChannel();
-            sourceChannel.transferTo(0, sourceChannel.size(),
-                    destinationChannel);
-        } finally {
-            if (sourceChannel != null && sourceChannel.isOpen()) {
-                sourceChannel.close();
-            }
-            if (destinationChannel != null && destinationChannel.isOpen()) {
-                destinationChannel.close();
-            }
-        }
+    private void messageJOptionPane(String msg) {
+        JOptionPane.showMessageDialog(null, msg);
     }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton criarRadio;
-    private javax.swing.JButton criarRadio1;
-    private javax.swing.JButton criarRadio2;
+    private javax.swing.JButton buttonAddMusica;
+    private javax.swing.JButton buttonAlterarMusica;
+    private javax.swing.JButton buttonBuscarFile;
     private javax.swing.JComboBox<String> estiloMusical;
-    private javax.swing.JButton jButton1;
     private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JInternalFrame jInternalFrame2;
     private javax.swing.JLabel jLabel1;

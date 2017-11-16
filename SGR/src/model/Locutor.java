@@ -1,5 +1,7 @@
 package model;
 
+import objetos.ObjetoLocutor;
+import sessao.Sessao;
 import connection.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -103,6 +105,29 @@ public class Locutor extends Pessoa {
 
     private void alterarLocutor() {
 
+    }
+    
+    public void alterarSenhaLocutor(){
+        
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+
+        try {
+            stmt = con.prepareStatement("UPDATE Locutores SET senha = ? WHERE id = ?");
+            stmt.setString(1, this.getSenha());
+            stmt.setInt(2, Sessao.getIdUser());
+
+            int rowsUpdated = stmt.executeUpdate();
+            if (rowsUpdated > 0) {
+                Sessao.atualizarDados(); // Atualizar dados Usuário
+                JOptionPane.showMessageDialog(null, "Senha Alterada com Sucesso");
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao Alterar Senha" + ex);
+        } finally {
+            ConnectionFactory.closeConnection(con, stmt);
+        }
     }
 
     public Date getDataNascimento() {

@@ -5,7 +5,7 @@
  */
 package view.radio;
 
-import model.Sessao;
+import sessao.Sessao;
 
 /**
  *

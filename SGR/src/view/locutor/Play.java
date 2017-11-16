@@ -12,8 +12,8 @@ import javax.swing.table.DefaultTableModel;
 import model.ListaMusica;
 import model.TocadorMusica;
 import model.Musica;
-import model.ObjetoListaMusica;
-import model.ObjetoMusica;
+import objetos.ObjetoListaMusica;
+import objetos.ObjetoMusica;
 
 /**
  *

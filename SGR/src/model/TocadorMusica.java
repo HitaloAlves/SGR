@@ -5,6 +5,7 @@
  */
 package model;
 
+import objetos.ObjetoMusica;
 import java.io.File;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;

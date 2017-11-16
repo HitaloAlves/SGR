@@ -5,12 +5,10 @@
  */
 package view.locutor;
 
-//import view.*;
-//import javax.swing.JOptionPane;
+import controller.LocutorController;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import model.Sessao;
+import javax.swing.JOptionPane;
+import sessao.Sessao;
 
 /**
  *
@@ -341,37 +339,22 @@ public class TelaMyConta extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cpfLocutorActionPerformed
 
     private void alterarSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alterarSenhaActionPerformed
-        // TODO add your handling code here:
+        LocutorController locutorC = new LocutorController();
+        locutorC.setSenha(senhaLocutor.getText());
+        
+        locutorC.verifInput();
 
-//        if (validCampos()) {
-//
-//            Locutor criarL = new Locutor();
-//
-//            //            replaceAll("[^0-9]", "") Deixar somente números
-//            criarL.setNome(nomeLocutor.getText());
-//
-//            // Transformando data
-//            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-//            LocalDate data = LocalDate.parse(dataNasciLocutor.getText(), formato);
-//
-//            criarL.setDataNascimento(java.sql.Date.valueOf(data)); // Convertendo data
-//            criarL.setCpf(cpfLocutor.getText().replaceAll("[^0-9]", ""));
-//            criarL.setSexo(sexoLocutor.getSelectedItem().toString());
-//            criarL.setTelefone(telefoneLocutor.getText().replaceAll("[^0-9]", ""));
-//
-//            criarL.setEmail(emailLocutor.getText());
-//            criarL.setSenha(senhaLocutor.getText());
-//
-//            if (criarL.getCriarLocutor()) {
-//                nomeLocutor.setText(null);
-//                dataNasciLocutor.setText(null);
-//                cpfLocutor.setText(null);
-//                sexoLocutor.setSelectedItem(" ");
-//                telefoneLocutor.setText(null);
-//                emailLocutor.setText(null);
-//                senhaLocutor.setText(null);
-//            }
-//        }
+        if (locutorC.isValid()) {
+            
+            locutorC.alterarSenha();
+            
+            if (!locutorC.isValid()) {
+                JOptionPane.showMessageDialog(null, locutorC.getRetornoMsg());
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, locutorC.getRetornoMsg());
+        }
     }//GEN-LAST:event_alterarSenhaActionPerformed
 
 

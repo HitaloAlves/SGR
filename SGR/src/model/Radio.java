@@ -1,5 +1,7 @@
 package model;
 
+import objetos.ObjetoRadio;
+import sessao.Sessao;
 import connection.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,7 +13,7 @@ import javax.swing.JOptionPane;
  *
  * @author leonardo
  */
-class Radio {
+public class Radio {
 
     private String nome;
     private String telefone;

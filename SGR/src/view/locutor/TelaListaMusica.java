@@ -5,13 +5,13 @@
  */
 package view.locutor;
 
+import controller.MusicaController;
+import controller.PlayListaController;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import model.ListaMusica;
-import model.Musica;
-import model.ObjetoListaMusica;
-import model.ObjetoMusica;
+import objetos.ObjetoListaMusica;
+import objetos.ObjetoMusica;
 
 /**
  *
@@ -31,25 +31,21 @@ public class TelaListaMusica extends javax.swing.JInternalFrame {
         readTableMusica();
     }
 
-    public boolean validCampos() {
-        boolean check = true;
-
-        if (nomeLista.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Preencha o campo Nome");
-            check = false;
-        }
-
-        return check;
+    public void readTableLista() {
+        PlayListaController listaC = new PlayListaController();
+        this.objListaM = listaC.listasPlayListas();
+        this.tableLista();
     }
 
-    public void readTableLista() {
+    public void searchTableLista(String search) {
+        PlayListaController listaC = new PlayListaController();
+        this.objListaM = listaC.consultarPlayLista(search);
+        this.tableLista();
+    }
+
+    public void tableLista() {
         DefaultTableModel modelo = (DefaultTableModel) jTListaM.getModel();
-
         modelo.setNumRows(0); // Limpando a tabela
-
-        ListaMusica listaM = new ListaMusica();
-
-        this.objListaM = listaM.listasListasMusicas();
 
         for (ObjetoListaMusica lm : this.objListaM) {
 
@@ -59,17 +55,23 @@ public class TelaListaMusica extends javax.swing.JInternalFrame {
             });
 
         }
-
     }
 
     public void readTableMusica() {
+        MusicaController musicaC = new MusicaController();
+        this.objMusica = musicaC.listarListasMusicas();
+        this.tableMusica();
+    }
+
+    public void searchTableMusica(String search) {
+        MusicaController musicaC = new MusicaController();
+        this.objMusica = musicaC.consultarMusicas(search);
+        this.tableMusica();
+    }
+
+    public void tableMusica() {
         DefaultTableModel modelo = (DefaultTableModel) jTMusicas.getModel();
-
         modelo.setNumRows(0); // Limpando a tabela
-
-        Musica musica = new Musica();
-
-        this.objMusica = musica.listarListasMusicas();
 
         for (ObjetoMusica m : this.objMusica) {
 
@@ -82,56 +84,8 @@ public class TelaListaMusica extends javax.swing.JInternalFrame {
             });
 
         }
-
     }
 
-    public void readTableForSearch(String search) {
-//        DefaultTableModel modelo = (DefaultTableModel) jTEventos.getModel();
-//        
-//
-//        modelo.setNumRows(0); // Limpando a tabela
-//
-//        ListaMusica listaM = new ListaMusica();
-//
-//        this.objRadio = listaM.listasListasMusicas();
-//
-//        for (ObjetoRadio rd : this.objRadio) { // Pesquisando no banco usando LIKE, Se existe algo no mesmo
-//            
-//            String status = rd.getRadioBloqueada() == true ? "Bloqueado" : "OK";
-//            
-//            modelo.addRow(new Object[]{ // Adicionando dados na tabela
-//                rd.getId(),
-//                rd.getNome(),
-//                rd.getCnpj(),
-//                status
-//            });
-//
-//        }
-
-    }
-
-//    private JComponent CoresTable(DefaultTableModel defaulTableModel) {
-//        JTable jTable = new JTable(defaulTableModel) {
-//
-//            @Override
-//            public Component prepareRenderer(TableCellRenderer renderer, int row, int colunm ) {
-//                Component component = super.prepareRenderer(renderer, row, colunm);
-//                
-//                int linha = convertRowIndexToModel(row);
-//                
-//                String status = (String) getModel().getValueAt(linha, 3);
-//                
-//                if("Bloqueado".equals(status) ){
-//                    component.setBackground(Color.RED);
-//                }
-//                
-//                return component;
-//            }
-//        };
-//        
-//        return new JScrollPane(jTable);
-//        
-//    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -144,15 +98,15 @@ public class TelaListaMusica extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTListaM = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton4 = new javax.swing.JButton();
+        searchPlayLista = new javax.swing.JTextField();
+        buttonBucarPlayLista = new javax.swing.JButton();
+        buttonCriarPlayLista = new javax.swing.JButton();
+        buttonExcluirPlayLista = new javax.swing.JButton();
+        buttonAlterarPlayLista = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jInternalFrame1 = new javax.swing.JInternalFrame();
         jPanel2 = new javax.swing.JPanel();
@@ -163,10 +117,10 @@ public class TelaListaMusica extends javax.swing.JInternalFrame {
         jPanel5 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTMusicas = new javax.swing.JTable();
-        jButton6 = new javax.swing.JButton();
-        jTextField2 = new javax.swing.JTextField();
+        buttonBuscarMusica = new javax.swing.JButton();
+        searchMusica = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jButton7 = new javax.swing.JButton();
+        buttonAddMusicaPlayLista = new javax.swing.JButton();
 
         jLabel3.setText("jLabel3");
 
@@ -174,36 +128,10 @@ public class TelaListaMusica extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setIconifiable(true);
-        setMaximizable(true);
-        setResizable(true);
-        setTitle("Lista Musica");
+        setTitle("Play Listas");
         setToolTipText("");
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
-        jButton2.setText("Criar Lista");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pencil.png"))); // NOI18N
-        jButton3.setText("Alterar Lista");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pencil_delete.png"))); // NOI18N
-        jButton5.setText("Excluir Lista");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-
-        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Listas Músicas"));
+        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Play Listas"));
 
         jTListaM.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -235,80 +163,44 @@ public class TelaListaMusica extends javax.swing.JInternalFrame {
 
         jLabel4.setText("Pesquisar Lista");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        searchPlayLista.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                searchPlayListaActionPerformed(evt);
             }
         });
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/zoom.png"))); // NOI18N
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        buttonBucarPlayLista.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/zoom.png"))); // NOI18N
+        buttonBucarPlayLista.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                buttonBucarPlayListaActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addGap(29, 29, 29)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton4)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel4))
-                    .addComponent(jButton4))
-                .addGap(5, 5, 5)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        buttonCriarPlayLista.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
+        buttonCriarPlayLista.setText("Criar Lista");
+        buttonCriarPlayLista.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonCriarPlayListaActionPerformed(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(124, 124, 124)
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                        .addComponent(jButton5)
-                        .addGap(26, 26, 26)
-                        .addComponent(jButton3)
-                        .addContainerGap())))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton5)
-                    .addComponent(jButton3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        buttonExcluirPlayLista.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pencil_delete.png"))); // NOI18N
+        buttonExcluirPlayLista.setText("Excluir Lista");
+        buttonExcluirPlayLista.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonExcluirPlayListaActionPerformed(evt);
+            }
+        });
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Dados Lista"));
+        buttonAlterarPlayLista.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pencil.png"))); // NOI18N
+        buttonAlterarPlayLista.setText("Alterar Lista");
+        buttonAlterarPlayLista.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonAlterarPlayListaActionPerformed(evt);
+            }
+        });
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Editar"));
 
         jInternalFrame1.setClosable(true);
 
@@ -343,30 +235,71 @@ public class TelaListaMusica extends javax.swing.JInternalFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(130, 130, 130)
+                .addContainerGap()
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addComponent(nomeLista, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(0, 282, Short.MAX_VALUE)
-                    .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 283, Short.MAX_VALUE)))
+                .addComponent(nomeLista, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 0, Short.MAX_VALUE)
+                .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 14, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(nomeLista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(34, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(0, 36, Short.MAX_VALUE)
-                    .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 37, Short.MAX_VALUE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
+                        .addComponent(buttonCriarPlayLista)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(buttonAlterarPlayLista)
+                        .addGap(44, 44, 44)
+                        .addComponent(buttonExcluirPlayLista))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(jLabel4)
+                        .addGap(29, 29, 29)
+                        .addComponent(searchPlayLista, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(buttonBucarPlayLista)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonCriarPlayLista)
+                    .addComponent(buttonAlterarPlayLista)
+                    .addComponent(buttonExcluirPlayLista))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(searchPlayLista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4))
+                    .addComponent(buttonBucarPlayLista))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Lista de Músicas"));
@@ -425,26 +358,26 @@ public class TelaListaMusica extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(jTMusicas);
 
-        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/zoom.png"))); // NOI18N
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        buttonBuscarMusica.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/zoom.png"))); // NOI18N
+        buttonBuscarMusica.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                buttonBuscarMusicaActionPerformed(evt);
             }
         });
 
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        searchMusica.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                searchMusicaActionPerformed(evt);
             }
         });
 
-        jLabel5.setText("Pesquisar Lista");
+        jLabel5.setText("Pesquisar Música");
 
-        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
-        jButton7.setText("Adicionar Música a Lista");
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
+        buttonAddMusicaPlayLista.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/add.png"))); // NOI18N
+        buttonAddMusicaPlayLista.setText("Adicionar Música a Lista");
+        buttonAddMusicaPlayLista.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
+                buttonAddMusicaPlayListaActionPerformed(evt);
             }
         });
 
@@ -453,107 +386,81 @@ public class TelaListaMusica extends javax.swing.JInternalFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jInternalFrame2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(93, 93, 93))
+            .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(searchMusica, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(buttonBuscarMusica, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(118, 118, 118))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 453, Short.MAX_VALUE)
                             .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jInternalFrame2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(70, 70, 70))
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, Short.MAX_VALUE)
-                        .addComponent(jButton7)))
-                .addContainerGap())
+                                .addComponent(buttonAddMusicaPlayLista)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(1, 1, 1)
+                .addComponent(jInternalFrame2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addComponent(buttonAddMusicaPlayLista)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton7)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jButton6)
-                        .addGroup(jPanel4Layout.createSequentialGroup()
-                            .addComponent(jInternalFrame2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel5)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 270, Short.MAX_VALUE)
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(searchMusica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel5))
+                    .addComponent(buttonBuscarMusica))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+
+        jPanel6.getAccessibleContext().setAccessibleName("Play Listas");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(35, 35, 35))
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(48, 48, 48)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
         );
 
-        setBounds(250, 20, 1126, 543);
+        setBounds(250, 20, 1029, 543);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        if (jTListaM.getSelectedRow() != -1) {
-            if (jTMusicas.getSelectedRow() != -1) {
-                int idListaMusica = this.objListaM.get(jTListaM.getSelectedRow()).getIdLista();
-                int idMusica = this.objMusica.get(jTMusicas.getSelectedRow()).getIdMusica();
-
-                ListaMusica listM = new ListaMusica();
-
-                listM.setLista_id(idListaMusica);
-                listM.setMusica_id(idMusica);
-
-                listM.getAdicionarMusicaNaLista();
-
-            } else {
-                JOptionPane.showMessageDialog(null, "Selecione um música");
-            }
-
-        } else {
-            JOptionPane.showMessageDialog(null, "Selecione um lista");
-        }
-
-
-    }//GEN-LAST:event_jButton7ActionPerformed
-
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
-
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton6ActionPerformed
-
-    private void jTMusicasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTMusicasKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTMusicasKeyPressed
-
-    private void jTMusicasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTMusicasMouseClicked
-
-    }//GEN-LAST:event_jTMusicasMouseClicked
 
     private void jTListaMKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTListaMKeyPressed
         ObjetoListaMusica listaM = this.objListaM.get(jTListaM.getSelectedRow());
@@ -566,88 +473,133 @@ public class TelaListaMusica extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_jTListaMMouseClicked
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        //        if (jTEventos.getSelectedRow() != -1) {
-        //
-        //            int check = JOptionPane.showConfirmDialog(null, "Confirma o desbloqueamento", "Desbloquear", JOptionPane.YES_NO_OPTION);
-        //
-        //            if (check == 0) {
-        ////                DefaultTableModel dtmEventos = (DefaultTableModel) jTEventos.getModel();
-        ////                dtmEventos.removeRow(jTEventos.getSelectedRow());
-        //
-        //                Radio radio = new Radio();
-        //
-        //                radio.setIdRadio(Integer.parseInt(jTEventos.getValueAt(jTEventos.getSelectedRow(), 0).toString()));
-        //
-        //                radio.getDesbloquearRadio();
-        //
-        //                readTable();
-        //            }
-        //
-        //        } else {
-        //            JOptionPane.showMessageDialog(null, "Selecione um rádio para desbloquear");
-        //        }
-    }//GEN-LAST:event_jButton5ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-
-        //        readTableForSearch(jTextField1.getText());
-    }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-
+    private void buttonExcluirPlayListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExcluirPlayListaActionPerformed
         if (jTListaM.getSelectedRow() != -1) {
-            if (validCampos()) {
-                int check = JOptionPane.showConfirmDialog(null, "Confirma a alteração", "Alteração", JOptionPane.YES_NO_OPTION);
 
-                if (check == 0) {
+            int check = JOptionPane.showConfirmDialog(null, "Confirma a exclusão", "Excluir", JOptionPane.YES_NO_OPTION);
 
-                    ObjetoListaMusica listaM = this.objListaM.get(jTListaM.getSelectedRow());
+            if (check == 0) {
+                ObjetoListaMusica dadoslista = this.objListaM.get(jTListaM.getSelectedRow());
 
-                    if (!nomeLista.getText().equals(listaM.getNome())) {
-
-                        ListaMusica listaMA = new ListaMusica();
-                        listaMA.setLista_id(listaM.getIdLista());
-                        listaMA.setNome(nomeLista.getText());
-
-                        listaMA.getAlterarListaMusica();
-
-                        readTableLista();
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Você não alterou o nome da lista");
-                    }
-
-                }
-
+                PlayListaController listaC = new PlayListaController();
+                listaC.setLista_id(dadoslista.getIdLista());
+                listaC.excluirPlayLista();
+                nomeLista.setText(""); // Limpar input
+                readTableLista();
             }
 
         } else {
-            JOptionPane.showMessageDialog(null, "Selecione uma lista para alterar");
+            this.messageJOptionPane("Selecione uma lista para excluir");
         }
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_buttonExcluirPlayListaActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void buttonBucarPlayListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBucarPlayListaActionPerformed
+        this.searchTableLista(searchPlayLista.getText());
+    }//GEN-LAST:event_buttonBucarPlayListaActionPerformed
 
-        if (validCampos()) {
+    private void searchPlayListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchPlayListaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchPlayListaActionPerformed
 
-            if (!veficarNomeIguaisLista()) { // Se nomes forem iguais não alterar o nome
-                ListaMusica lmusica = new ListaMusica();
-                lmusica.setNome(nomeLista.getText());
-                lmusica.getAdicionarMusicaLista();
+    private void buttonAlterarPlayListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAlterarPlayListaActionPerformed
 
-                readTableLista();
+        if (jTListaM.getSelectedRow() != -1) {
+            ObjetoListaMusica dadoslista = this.objListaM.get(jTListaM.getSelectedRow());
+            
+            PlayListaController listaC = new PlayListaController();
+
+            listaC.setLista_id(dadoslista.getIdLista());
+            listaC.setNome(nomeLista.getText());
+            listaC.validInput();
+
+            if (listaC.isValid()) {                
+
+                if (!nomeLista.getText().equals(dadoslista.getNome())) {
+                    int check = JOptionPane.showConfirmDialog(null, "Confirma a alteração", "Alteração", JOptionPane.YES_NO_OPTION);
+
+                    if (check == 0) {
+
+                        listaC.alterarListaMusica();
+                        nomeLista.setText(""); // Limpar input
+                        readTableLista();
+
+                    }
+                } else {
+                    this.messageJOptionPane("Você não alterou o nome da lista");
+                }
+
             } else {
-                JOptionPane.showMessageDialog(null, "Nome de lista já existe");
+                this.messageJOptionPane(listaC.getRetornoMsg());
             }
 
+        } else {
+            this.messageJOptionPane("Selecione uma lista para alterar");
+        }
+    }//GEN-LAST:event_buttonAlterarPlayListaActionPerformed
+
+    private void buttonCriarPlayListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCriarPlayListaActionPerformed
+
+        PlayListaController listaC = new PlayListaController();
+
+        listaC.setNome(nomeLista.getText());
+
+        listaC.validInput();
+
+        if (listaC.isValid()) {
+
+            if (!veficarNomeIguaisLista()) { // Se nomes forem iguais não alterar o nome
+
+                listaC.cadPlayLista();
+                nomeLista.setText(""); // Limpar input
+                readTableLista();
+            } else {
+                this.messageJOptionPane("Nome de lista já existe");
+            }
+
+        } else {
+            this.messageJOptionPane(listaC.getRetornoMsg());
         }
 
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_buttonCriarPlayListaActionPerformed
+
+    private void buttonAddMusicaPlayListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddMusicaPlayListaActionPerformed
+        if (jTListaM.getSelectedRow() != -1) {
+            if (jTMusicas.getSelectedRow() != -1) {
+                PlayListaController listaC = new PlayListaController();
+
+                int idListaMusica = this.objListaM.get(jTListaM.getSelectedRow()).getIdLista();
+                int idMusica = this.objMusica.get(jTMusicas.getSelectedRow()).getIdMusica();
+
+                listaC.setLista_id(idListaMusica);
+                listaC.setMusica_id(idMusica);
+
+                listaC.adicionarMusicaNaLista();
+
+            } else {
+                this.messageJOptionPane("Selecione um música");
+            }
+
+        } else {
+            this.messageJOptionPane("Selecione um lista");
+        }
+
+    }//GEN-LAST:event_buttonAddMusicaPlayListaActionPerformed
+
+    private void searchMusicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchMusicaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchMusicaActionPerformed
+
+    private void buttonBuscarMusicaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBuscarMusicaActionPerformed
+        this.searchTableMusica(searchMusica.getText());
+    }//GEN-LAST:event_buttonBuscarMusicaActionPerformed
+
+    private void jTMusicasKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTMusicasKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTMusicasKeyPressed
+
+    private void jTMusicasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTMusicasMouseClicked
+
+    }//GEN-LAST:event_jTMusicasMouseClicked
 
     public boolean veficarNomeIguaisLista() { // Se nomes forem iguais não alterar o nome
 
@@ -664,13 +616,17 @@ public class TelaListaMusica extends javax.swing.JInternalFrame {
         return check;
     }
 
+    public void messageJOptionPane(String msg) {
+        JOptionPane.showMessageDialog(null, msg);
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
+    private javax.swing.JButton buttonAddMusicaPlayLista;
+    private javax.swing.JButton buttonAlterarPlayLista;
+    private javax.swing.JButton buttonBucarPlayLista;
+    private javax.swing.JButton buttonBuscarMusica;
+    private javax.swing.JButton buttonCriarPlayLista;
+    private javax.swing.JButton buttonExcluirPlayLista;
     private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JInternalFrame jInternalFrame2;
     private javax.swing.JLabel jLabel1;
@@ -687,9 +643,9 @@ public class TelaListaMusica extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTListaM;
     private javax.swing.JTable jTMusicas;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField nomeLista;
+    private javax.swing.JTextField searchMusica;
+    private javax.swing.JTextField searchPlayLista;
     // End of variables declaration//GEN-END:variables
 }

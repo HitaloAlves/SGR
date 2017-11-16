@@ -1,10 +1,10 @@
 
 package model;
 
+import objetos.ObjetoEstiloMusical;
+import objetos.ObjetoMusica;
+import sessao.Sessao;
 import connection.ConnectionFactory;
-import java.applet.Applet;
-import java.applet.AudioClip;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,6 +19,7 @@ import javax.swing.JOptionPane;
  */
 public class Musica {
     
+    private int id_musica;
     private String nome;
     private String estiloMusical;
     private String nomeCantor;
@@ -41,8 +42,6 @@ public class Musica {
             String sql = "select M.id, M.nome, M.nomeCantor, M.banda, M.album, M.nomeFileMusica, EM.nome from Musicas M join EstiloMusicais EM on M.EstiloMusicais_id = EM.id where M.Locutores_Radio_id = ?";
             
             stmt = con.prepareStatement(sql);
-            
-//            stmt.setInt(1, Sessao.getIdUser());
             stmt.setInt(1, Sessao.getIdRadio());
             
             rs = stmt.executeQuery();
@@ -63,7 +62,7 @@ public class Musica {
             }
 
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao Listar" + ex);
+            JOptionPane.showMessageDialog(null, "Erro ao Listar");
         } finally {
             ConnectionFactory.closeConnection(con, stmt, rs);
         }
@@ -71,11 +70,7 @@ public class Musica {
         return listaObj;
 
     }
-    
-    public void criarListaMusica(){
         
-    }
-    
     public void cadastrarMusica(){
         
         Connection con = ConnectionFactory.getConnection();
@@ -96,11 +91,42 @@ public class Musica {
             int rowsUpdated = stmt.executeUpdate();
 
             if (rowsUpdated > 0) {
-                JOptionPane.showMessageDialog(null, "Músida adicionada com Sucesso");
+                JOptionPane.showMessageDialog(null, "Música adicionada com Sucesso");
             }
 
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao Adicionar Música" + ex);
+            JOptionPane.showMessageDialog(null, "Erro ao Adicionar Música");
+        } finally {
+            ConnectionFactory.closeConnection(con, stmt);
+        }
+        
+    }
+    
+    public void alterarMusica(){
+        
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+
+        try {
+            
+            stmt = con.prepareStatement("UPDATE Musicas SET nome = ?, nomeCantor = ?, banda = ?, album = ?, EstiloMusicais_id = ? WHERE Locutores_id = ? and Locutores_Radio_id = ? and id = ?");
+            stmt.setString(1, this.nome);
+            stmt.setString(2, this.nomeCantor);
+            stmt.setString(3, this.banda);
+            stmt.setString(4, this.album);
+            stmt.setInt(5, this.idEstiloMusical()); // Pegar id do Estilo pelo nome
+            stmt.setInt(6, Sessao.getIdUser()); 
+            stmt.setInt(7, Sessao.getIdRadio());            
+            stmt.setInt(8, this.id_musica);            
+
+            int rowsUpdated = stmt.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                JOptionPane.showMessageDialog(null, "Música alterada com Sucesso");
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao alterar Música");
         } finally {
             ConnectionFactory.closeConnection(con, stmt);
         }
@@ -195,7 +221,7 @@ public class Musica {
             }
 
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao Listar" + ex);
+            JOptionPane.showMessageDialog(null, "Erro ao Listar");
         } finally {
             ConnectionFactory.closeConnection(con, stmt, rs);
         }
@@ -203,6 +229,55 @@ public class Musica {
         return listaObj;
         
     }
+    
+    public List<ObjetoMusica> consultarMusica(String search) {
+
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+
+        ResultSet rs = null;
+
+        List<ObjetoMusica> listaObj = new ArrayList<>();
+
+        try {
+            String sql = "select M.id, M.nome, M.nomeCantor, M.banda, M.album, M.nomeFileMusica, EM.nome from Musicas M join EstiloMusicais EM on M.EstiloMusicais_id = EM.id where M.Locutores_Radio_id = ? and M.nome LIKE ?";
+            stmt = con.prepareStatement(sql);            
+            stmt.setInt(1, Sessao.getIdRadio());
+            stmt.setString(2, "%" + search + "%");
+            
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+
+                ObjetoMusica listaMusica = new ObjetoMusica(); // Objeto Musica                
+                
+                listaMusica.setIdMusica(rs.getInt("M.id"));
+                listaMusica.setNome(rs.getString("M.nome"));
+                listaMusica.setNomeCantor(rs.getString("M.nomeCantor"));
+                listaMusica.setBanda(rs.getString("M.banda"));
+                listaMusica.setAlbum(rs.getString("M.album"));
+                listaMusica.setNomeFileMusica(rs.getString("M.nomeFileMusica"));
+                listaMusica.setEstiloMusical(rs.getString("EM.nome"));
+                                
+                listaObj.add(listaMusica);
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao Listar Músicas");
+        } finally {
+            ConnectionFactory.closeConnection(con, stmt, rs);
+        }
+
+        return listaObj;
+    }
+
+    public int getId_musica() {
+        return id_musica;
+    }
+
+    public void setId_musica(int id_musica) {
+        this.id_musica = id_musica;
+    }   
 
     public String getNome() {
         return nome;

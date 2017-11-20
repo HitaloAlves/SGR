@@ -5,8 +5,8 @@
  */
 package view.locutor;
 
-import controller.MusicaController;
-import controller.PlayListaController;
+import controller.locutor.MusicaController;
+import controller.locutor.PlayListaController;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;

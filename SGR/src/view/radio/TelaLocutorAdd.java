@@ -5,10 +5,8 @@
  */
 package view.radio;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import controller.radio.LocutorController;
 import javax.swing.JOptionPane;
-import model.Locutor;
 
 /**
  *
@@ -21,32 +19,6 @@ public class TelaLocutorAdd extends javax.swing.JInternalFrame {
      */
     public TelaLocutorAdd() {
         initComponents();
-    }
-
-    public boolean validCampos() {
-        boolean check = true;
-
-        if (nomeLocutor.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Preencha o campo Nome");
-            check = false;
-        } else if (telefoneLocutor.getText().equals("(  )      -      ")) {
-            JOptionPane.showMessageDialog(null, "Preencha o campo Tefenone");
-            check = false;
-        } else if (dataNasciLocutor.getText().equals("  /  /    ")) {
-            JOptionPane.showMessageDialog(null, "Preencha o campo Data de Nascimento");
-            check = false;
-        } else if (cpfLocutor.getText().equals("  .   -   ")) {
-            JOptionPane.showMessageDialog(null, "Preencha o campo CPF");
-            check = false;
-        } else if (emailLocutor.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Preencha o campo E-mail");
-            check = false;
-        } else if (senhaLocutor.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Preencha o campo Senha");
-            check = false;
-        }
-
-        return check;
     }
 
     /**
@@ -340,34 +312,34 @@ public class TelaLocutorAdd extends javax.swing.JInternalFrame {
     private void adicionarLocutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adicionarLocutorActionPerformed
         // TODO add your handling code here:
 
-        if (validCampos()) {
-            
-            Locutor criarL = new Locutor();
+        LocutorController locutor = new LocutorController();
 
-//            replaceAll("[^0-9]", "") Deixar somente números
-            criarL.setNome(nomeLocutor.getText());
+        locutor.setNome(nomeLocutor.getText());
 
-            // Transformando data 
-            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            LocalDate data = LocalDate.parse(dataNasciLocutor.getText(), formato);
+        locutor.setDataNascimento(dataNasciLocutor.getText()); // Convertendo data
+        locutor.setCpf(cpfLocutor.getText());
+        locutor.setSexo(sexoLocutor.getSelectedItem().toString());
+        locutor.setTelefone(telefoneLocutor.getText());
 
-            criarL.setDataNascimento(java.sql.Date.valueOf(data)); // Convertendo data
-            criarL.setCpf(cpfLocutor.getText().replaceAll("[^0-9]", ""));
-            criarL.setSexo(sexoLocutor.getSelectedItem().toString());
-            criarL.setTelefone(telefoneLocutor.getText().replaceAll("[^0-9]", ""));
+        locutor.setEmail(emailLocutor.getText());
+        locutor.setSenha(senhaLocutor.getText());
+        
+        locutor.validInputs();
 
-            criarL.setEmail(emailLocutor.getText());
-            criarL.setSenha(senhaLocutor.getText());
+        if (locutor.isValid()) {
 
-            if (criarL.getCriarLocutor()) {
-                nomeLocutor.setText(null);
-                dataNasciLocutor.setText(null);
-                cpfLocutor.setText(null);
-                sexoLocutor.setSelectedItem(" ");
-                telefoneLocutor.setText(null);
-                emailLocutor.setText(null);
-                senhaLocutor.setText(null);
-            }
+            locutor.criarLocutor();
+
+            nomeLocutor.setText(null);
+            dataNasciLocutor.setText(null);
+            cpfLocutor.setText(null);
+            sexoLocutor.setSelectedItem(" ");
+            telefoneLocutor.setText(null);
+            emailLocutor.setText(null);
+            senhaLocutor.setText(null);
+
+        } else {
+            JOptionPane.showMessageDialog(null, locutor.getRetornoMsg());
         }
     }//GEN-LAST:event_adicionarLocutorActionPerformed
 

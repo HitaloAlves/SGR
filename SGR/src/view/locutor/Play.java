@@ -5,13 +5,12 @@
  */
 package view.locutor;
 
-import java.io.File;
+import controller.locutor.MediaPlayController;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import model.ListaMusica;
-import model.TocadorMusica;
-import model.Musica;
+import controller.locutor.PlayListaController;
+import controller.locutor.MusicaController;
 import objetos.ObjetoListaMusica;
 import objetos.ObjetoMusica;
 
@@ -23,7 +22,8 @@ public class Play extends javax.swing.JInternalFrame {
 
     private List<ObjetoListaMusica> objListaM;
     private List<ObjetoMusica> objMusica;
-    private final TocadorMusica musicaPlay = new TocadorMusica();
+
+    private MediaPlayController musicaPlay;
 
     /**
      * Creates new form TelaEvento1
@@ -34,22 +34,12 @@ public class Play extends javax.swing.JInternalFrame {
     }
 
     public void readTableLista() {
-        DefaultTableModel modelo = (DefaultTableModel) jTListaMusicas.getModel();
 
-        modelo.setNumRows(0); // Limpando a tabela
+        PlayListaController listaM = new PlayListaController();
 
-        ListaMusica listaM = new ListaMusica();
+        this.objListaM = listaM.listasPlayListas();
 
-        this.objListaM = listaM.listasListasMusicas();
-
-        for (ObjetoListaMusica lm : this.objListaM) {
-
-            modelo.addRow(new Object[]{
-                lm.getNome()
-            });
-
-        }
-
+        this.loadTablePlayLista();
     }
 
     public void readTableMusica() {
@@ -67,13 +57,19 @@ public class Play extends javax.swing.JInternalFrame {
     }
 
     public void readTableMusicaForSearch(String search) {
+
+        PlayListaController listaM = new PlayListaController();
+
+        this.objListaM = listaM.consultarPlayLista(search);
+
+        this.loadTablePlayLista();
+
+    }
+
+    public void loadTablePlayLista() {
         DefaultTableModel modelo = (DefaultTableModel) jTListaMusicas.getModel();
 
         modelo.setNumRows(0); // Limpando a tabela
-
-        ListaMusica listaM = new ListaMusica();
-
-        this.objListaM = listaM.consultarListaMusica(search);
 
         for (ObjetoListaMusica lm : this.objListaM) {
 
@@ -82,7 +78,6 @@ public class Play extends javax.swing.JInternalFrame {
             });
 
         }
-
     }
 
     /**
@@ -112,13 +107,7 @@ public class Play extends javax.swing.JInternalFrame {
         jLabel5 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         MusicaPlay = new javax.swing.JButton();
-        beforeMusica = new javax.swing.JButton();
-        nextMusica = new javax.swing.JButton();
-        volume = new javax.swing.JButton();
         nomeMusica = new javax.swing.JLabel();
-        jProgressBar1 = new javax.swing.JProgressBar();
-        downUpVolume = new javax.swing.JSlider();
-        MusicaPlay1 = new javax.swing.JButton();
 
         jLabel3.setText("jLabel3");
 
@@ -178,19 +167,17 @@ public class Play extends javax.swing.JInternalFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(nomeLista, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addComponent(nomeLista, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(nomeLista, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(14, Short.MAX_VALUE))
         );
@@ -312,49 +299,17 @@ public class Play extends javax.swing.JInternalFrame {
             }
         });
 
-        beforeMusica.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/before.png"))); // NOI18N
-
-        nextMusica.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/next.png"))); // NOI18N
-
-        volume.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Vol.png"))); // NOI18N
-
         nomeMusica.setText("Musica");
-
-        MusicaPlay1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pause.png"))); // NOI18N
-        MusicaPlay1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MusicaPlay1ActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(nomeMusica, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(41, 41, 41)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(volume)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(downUpVolume, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(15, 15, 15)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addComponent(beforeMusica, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(MusicaPlay, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(MusicaPlay1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(nextMusica, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(MusicaPlay, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nomeMusica, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -362,25 +317,8 @@ public class Play extends javax.swing.JInternalFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(nomeMusica, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nextMusica, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addGap(24, 24, 24)
-                            .addComponent(beforeMusica, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(MusicaPlay1)
-                                .addComponent(MusicaPlay)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(volume, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(downUpVolume, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(MusicaPlay, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -406,10 +344,11 @@ public class Play extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(0, 15, Short.MAX_VALUE)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(34, 34, 34)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(16, 16, 16)))
                 .addGap(28, 28, 28))
         );
 
@@ -420,7 +359,7 @@ public class Play extends javax.swing.JInternalFrame {
 
         ObjetoListaMusica listaM = this.objListaM.get(jTListaMusicas.getSelectedRow());
 
-        Musica musicasLista = new Musica();
+        MusicaController musicasLista = new MusicaController();
 
         List<ObjetoMusica> musicas = musicasLista.buscarMusicasLista(listaM.getIdLista()); // Buscar Músicas da lista pelo id Lista
 
@@ -456,17 +395,11 @@ public class Play extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jTMusicasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTMusicasMouseClicked
-        ObjetoMusica musica = this.objMusica.get(jTMusicas.getSelectedRow()); // Música do Play
+        ObjetoMusica musica = this.objMusica.get(jTMusicas.getSelectedRow()); // Música do MediaPlay
 
-        File file = new File("musicas/" + musica.getNomeFileMusica());
-
-        if (file.exists()) {
-            TocadorMusica.setMusica(musica);
-            nomeMusica.setText(TocadorMusica.getMusica().getNome());
-        } else {
-            JOptionPane.showMessageDialog(null, "File Música: "+musica.getNome()+" não encontrada");
-        }
-
+        this.musicaPlay = new MediaPlayController(musica);
+        
+        nomeMusica.setText(this.musicaPlay.getMusic().getNome());
 
     }//GEN-LAST:event_jTMusicasMouseClicked
 
@@ -476,9 +409,9 @@ public class Play extends javax.swing.JInternalFrame {
 
     private void MusicaPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MusicaPlayActionPerformed
         // Executar play somente se existir música
-        if (TocadorMusica.getMusica() != null) {
+        if (this.musicaPlay.getMusic().getNome() != null) {
 
-                TocadorMusica.playMusica();            
+            this.musicaPlay.play();
 
         } else {
             JOptionPane.showMessageDialog(null, "Selecione uma música para tocar");
@@ -486,24 +419,9 @@ public class Play extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_MusicaPlayActionPerformed
 
-    private void MusicaPlay1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MusicaPlay1ActionPerformed
-        // TODO add your handling code here:
-        if (TocadorMusica.getMusica() != null) {
-
-            TocadorMusica.pauseMusica();
-
-        } else {
-            JOptionPane.showMessageDialog(null, "Selecione uma música para tocar");
-        }
-
-    }//GEN-LAST:event_MusicaPlay1ActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton MusicaPlay;
-    private javax.swing.JButton MusicaPlay1;
-    private javax.swing.JButton beforeMusica;
-    private javax.swing.JSlider downUpVolume;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JInternalFrame jInternalFrame2;
@@ -514,16 +432,13 @@ public class Play extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTable jTListaMusicas;
     private javax.swing.JTable jTMusicas;
     private javax.swing.JTextField jTextField3;
-    private javax.swing.JButton nextMusica;
     private javax.swing.JLabel nomeLista;
     private javax.swing.JLabel nomeMusica;
     private javax.swing.JTextField searchListaM;
-    private javax.swing.JButton volume;
     // End of variables declaration//GEN-END:variables
 }

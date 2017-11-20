@@ -5,7 +5,7 @@
  */
 package view;
 
-import controller.AcessoController;
+import controller.locutor.AcessoController;
 import java.awt.event.KeyEvent;
 import view.locutor.TelaPrincipalLocutor;
 import view.radio.TelaPrincipalRadio;

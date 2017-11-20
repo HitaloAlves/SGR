@@ -5,7 +5,7 @@
  */
 package view.locutor;
 
-import controller.LocutorController;
+import controller.locutor.LocutorController;
 import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
 import sessao.Sessao;

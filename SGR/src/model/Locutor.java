@@ -56,7 +56,7 @@ public class Locutor extends Pessoa {
         }
     }
 
-    private boolean criarLocutor() {
+    public boolean criarLocutor() {
 
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null;
@@ -90,11 +90,7 @@ public class Locutor extends Pessoa {
         return check;
 
     }
-
-    public boolean getCriarLocutor() {
-        return this.criarLocutor();
-    }
-
+   
     public void consultarLocutor() {
 
     }
